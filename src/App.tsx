@@ -1,3 +1,5 @@
+'use client';
+
 import { FormEvent, useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
@@ -30,9 +32,10 @@ const CONTACT_EMAIL = 'ensotechstudio@gmail.com';
 const MESSENGER_URL = 'https://m.me/61590018866554';
 const CONTACT_PHONE = '0364151304';
 const CONTACT_PHONE_LABEL = '0364 151 304';
-const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-const CLARITY_PROJECT_ID = import.meta.env.VITE_CLARITY_PROJECT_ID;
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const CLARITY_PROJECT_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+const HERO_VISUAL_SRC = typeof heroVisual === 'string' ? heroVisual : heroVisual.src;
 
 const navLinks = [
   { href: '#positioning', label: 'Khác biệt' },
@@ -320,7 +323,7 @@ function App() {
             aria-hidden="true"
           >
             <img
-              src={heroVisual}
+              src={HERO_VISUAL_SRC}
               alt=""
               aria-hidden="true"
               className="h-auto w-[92%] max-w-none -translate-y-8 object-contain drop-shadow-[0_28px_76px_rgba(15,107,75,0.16)]"
@@ -402,7 +405,7 @@ function App() {
                 aria-hidden="true"
               >
                 <img
-                  src={heroVisual}
+                  src={HERO_VISUAL_SRC}
                   alt=""
                   className="absolute left-1/2 top-0 h-auto w-[132%] max-w-none -translate-x-1/2 object-contain opacity-95 sm:w-[104%]"
                 />
