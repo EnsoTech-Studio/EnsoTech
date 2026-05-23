@@ -657,8 +657,8 @@ function App() {
                     </div>
                     <h3 className="mt-6 text-2xl font-extrabold text-deep">Đã chuẩn bị email</h3>
                     <p className="mt-3 max-w-md text-sm leading-7 text-medium">
-                      Trình gửi email của bạn đã được mở với nội dung đã điền sẵn. Nếu chưa gửi được,
-                      hãy nhắn trực tiếp qua Messenger hoặc gửi email đến {CONTACT_EMAIL}.
+                      Trình gửi email của bạn đã được mở với nội dung đã điền sẵn. Nếu chưa gửi
+                      được, hãy nhắn trực tiếp qua Messenger hoặc gửi email đến {CONTACT_EMAIL}.
                     </p>
                     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                       <a
@@ -683,11 +683,13 @@ function App() {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                       <label className="flex gap-4">
-                        <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                        <span className="mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
                           <User className="h-5 w-5" />
                         </span>
                         <span className="flex-1">
-                          <span className="mb-1 block text-sm font-extrabold text-deep">Họ tên</span>
+                          <span className="mb-1 block text-sm font-extrabold text-deep">
+                            Họ tên
+                          </span>
                           <input
                             name="name"
                             required
@@ -698,7 +700,7 @@ function App() {
                       </label>
 
                       <label className="flex gap-4">
-                        <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                        <span className="mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
                           <Phone className="h-5 w-5" />
                         </span>
                         <span className="flex-1">
@@ -717,7 +719,7 @@ function App() {
                     </div>
 
                     <label className="flex gap-4">
-                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                      <span className="mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
                         <Mail className="h-5 w-5" />
                       </span>
                       <span className="flex-1">
@@ -732,7 +734,7 @@ function App() {
                     </label>
 
                     <label className="flex gap-4">
-                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                      <span className="mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
                         <LayoutGrid className="h-5 w-5" />
                       </span>
                       <span className="flex-1">
@@ -757,7 +759,7 @@ function App() {
                     </label>
 
                     <label className="flex gap-4">
-                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                      <span className="mt-6 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
                         <PenLine className="h-5 w-5" />
                       </span>
                       <span className="flex-1">
