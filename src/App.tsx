@@ -8,13 +8,16 @@ import {
   CheckCircle2,
   Code2,
   FileSearch,
+  LayoutGrid,
   Mail,
   Menu,
   MessageCircle,
+  PenLine,
   Phone,
   Send,
   ShieldCheck,
   Sparkles,
+  User,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import heroVisual from './assets/background_trans.png';
@@ -548,138 +551,246 @@ function App() {
           </div>
         </SectionReveal>
 
-        <SectionReveal id="contact" className="bg-white px-4 py-20 sm:px-6 lg:px-10">
-          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-            <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-tech">
-                // Gửi quy trình
-              </p>
-              <h2 className="text-3xl font-extrabold tracking-tight text-deep sm:text-5xl">
-                Bạn chỉ cần gửi 3 thông tin.
+        <SectionReveal
+          id="contact"
+          className="relative overflow-hidden bg-[#f7fbfa] px-6 py-20 sm:px-8 lg:px-10 lg:py-28"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(200,230,215,0.35)_0%,transparent_38%),radial-gradient(circle_at_90%_80%,rgba(200,230,215,0.25)_0%,transparent_38%)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-55 [background-image:radial-gradient(#d1e5dd_1px,transparent_1px)] [background-size:20px_20px]" />
+          <svg
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-10"
+            fill="none"
+            viewBox="0 0 1637 961"
+            aria-hidden="true"
+          >
+            <path
+              d="M-100 0 C 400 0, 800 900, 1800 900"
+              fill="none"
+              stroke="#167e54"
+              strokeWidth="2"
+            />
+          </svg>
+
+          <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-8">
+            <div className="flex flex-col pt-4 lg:col-span-5 lg:pt-8">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="text-sm font-extrabold uppercase tracking-[0.24em] text-tech">
+                  // Gửi quy trình
+                </span>
+                <span className="relative h-px w-8 bg-tech/25">
+                  <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-tech" />
+                </span>
+              </div>
+
+              <h2 className="text-4xl font-extrabold leading-[1.08] tracking-tight text-deep sm:text-5xl lg:text-[3.35rem]">
+                Bạn chỉ cần gửi
+                <br />
+                <span className="relative inline-block">
+                  3 thông tin.
+                  <span className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-tech/18" />
+                </span>
               </h2>
-              <p className="mt-5 text-base leading-8 text-medium">
+
+              <p className="mt-7 max-w-[31rem] text-base leading-8 text-medium sm:text-lg">
                 Bạn đang quản lý việc gì, đang dùng công cụ nào và điểm nào đang mất thời gian/dễ
-                sai/khó kiểm soát nhất. Từ đó EnsoTech sẽ gợi ý nên bắt đầu từ Software, Security,
-                Dashboard hay AI Agent.
+                sai/khó kiểm soát nhất.
+                <br />
+                <br />
+                Từ đó EnsoTech sẽ gợi ý nên bắt đầu từ Software, Security, Dashboard hay AI Agent.
               </p>
-              <div className="mt-8 space-y-3">
-                <a
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  className="flex items-center gap-3 text-sm font-bold text-deep transition-colors duration-300 hover:text-tech"
-                >
-                  <Mail className="h-5 w-5 text-tech" />
-                  {CONTACT_EMAIL}
-                </a>
-                <a
-                  href={`tel:${CONTACT_PHONE}`}
-                  className="flex items-center gap-3 text-sm font-bold text-deep transition-colors duration-300 hover:text-tech"
-                >
-                  <Phone className="h-5 w-5 text-tech" />
-                  {CONTACT_PHONE_LABEL}
-                </a>
-                <a
-                  href={MESSENGER_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-3 text-sm font-bold text-deep transition-colors duration-300 hover:text-tech"
-                >
-                  <MessageCircle className="h-5 w-5 text-tech" />
-                  EnsoTech Studio
-                </a>
+
+              <div className="mt-10 space-y-4">
+                {[
+                  {
+                    href: `mailto:${CONTACT_EMAIL}`,
+                    icon: Mail,
+                    title: CONTACT_EMAIL,
+                    label: 'Email liên hệ',
+                  },
+                  {
+                    href: `tel:${CONTACT_PHONE}`,
+                    icon: Phone,
+                    title: CONTACT_PHONE_LABEL,
+                    label: 'Hotline / Zalo',
+                  },
+                  {
+                    href: MESSENGER_URL,
+                    icon: MessageCircle,
+                    title: 'EnsoTech Studio',
+                    label: 'Hỗ trợ nhanh chóng',
+                    external: true,
+                  },
+                ].map((item) => {
+                  const ContactIcon = item.icon;
+                  return (
+                    <a
+                      key={item.title}
+                      href={item.href}
+                      target={item.external ? '_blank' : undefined}
+                      rel={item.external ? 'noreferrer' : undefined}
+                      className="group flex w-full max-w-[410px] items-center gap-5 rounded-[2rem] border border-white/40 bg-white/75 p-5 shadow-[0_8px_32px_rgba(31,38,135,0.07)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_14px_34px_rgba(18,49,43,0.1)]"
+                    >
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-tech text-white shadow-[0_10px_22px_rgba(22,126,84,0.24)] transition-transform duration-300 group-hover:scale-105">
+                        <ContactIcon className="h-6 w-6" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block break-all text-[0.95rem] font-extrabold leading-snug text-deep sm:text-base">
+                          {item.title}
+                        </span>
+                        <span className="mt-1 block text-sm font-medium text-medium">
+                          {item.label}
+                        </span>
+                      </span>
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
-            <LiquidGlassCard className="p-5 sm:p-7">
-              {submitted ? (
-                <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-lime/40 text-tech">
-                    <CheckCircle2 className="h-8 w-8" />
+            <div className="lg:col-span-7">
+              <div className="relative overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-6 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.06)] sm:p-8 lg:p-10">
+                <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-tech/25 to-transparent" />
+                {submitted ? (
+                  <div className="flex min-h-[520px] flex-col items-center justify-center text-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e6f3ee] text-tech shadow-[0_16px_34px_rgba(22,126,84,0.14)]">
+                      <CheckCircle2 className="h-8 w-8" />
+                    </div>
+                    <h3 className="mt-6 text-2xl font-extrabold text-deep">Đã chuẩn bị email</h3>
+                    <p className="mt-3 max-w-md text-sm leading-7 text-medium">
+                      Trình gửi email của bạn đã được mở với nội dung đã điền sẵn. Nếu chưa gửi được,
+                      hãy nhắn trực tiếp qua Messenger hoặc gửi email đến {CONTACT_EMAIL}.
+                    </p>
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                      <a
+                        href={MESSENGER_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-tech px-5 text-sm font-bold text-white shadow-[0_10px_25px_-5px_rgba(22,126,84,0.36)] transition-colors duration-300 hover:bg-deep"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Nhắn Messenger
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setSubmitted(false)}
+                        className="rounded-2xl border border-line bg-white px-5 py-3 text-sm font-bold text-deep transition-colors duration-300 hover:bg-mint"
+                      >
+                        Gửi yêu cầu khác
+                      </button>
+                    </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-extrabold text-deep">Đã chuẩn bị email</h3>
-                  <p className="mt-3 max-w-md text-sm leading-7 text-medium">
-                    Trình gửi email của bạn đã được mở với nội dung đã điền sẵn. Nếu chưa gửi được,
-                    hãy nhắn trực tiếp qua Messenger hoặc gửi email đến {CONTACT_EMAIL}.
-                  </p>
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <a
-                      href={MESSENGER_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-tech px-5 text-sm font-bold text-white transition-colors duration-300 hover:bg-deep"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      Nhắn Messenger
-                    </a>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                      <label className="flex gap-4">
+                        <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                          <User className="h-5 w-5" />
+                        </span>
+                        <span className="flex-1">
+                          <span className="mb-1 block text-sm font-extrabold text-deep">Họ tên</span>
+                          <input
+                            name="name"
+                            required
+                            placeholder="Nhập họ và tên"
+                            className="min-h-14 w-full rounded-xl border border-[#d7e5de] bg-gray-50/50 px-4 text-base text-deep shadow-sm outline-none transition-all duration-300 placeholder:text-gray-400 focus:border-tech focus:bg-white focus:ring-4 focus:ring-tech/10"
+                          />
+                        </span>
+                      </label>
+
+                      <label className="flex gap-4">
+                        <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                          <Phone className="h-5 w-5" />
+                        </span>
+                        <span className="flex-1">
+                          <span className="mb-1 block text-sm font-extrabold text-deep">
+                            Số điện thoại / Zalo
+                          </span>
+                          <input
+                            name="phone"
+                            required
+                            type="tel"
+                            placeholder="Nhập số điện thoại"
+                            className="min-h-14 w-full rounded-xl border border-[#d7e5de] bg-gray-50/50 px-4 text-base text-deep shadow-sm outline-none transition-all duration-300 placeholder:text-gray-400 focus:border-tech focus:bg-white focus:ring-4 focus:ring-tech/10"
+                          />
+                        </span>
+                      </label>
+                    </div>
+
+                    <label className="flex gap-4">
+                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                        <Mail className="h-5 w-5" />
+                      </span>
+                      <span className="flex-1">
+                        <span className="mb-1 block text-sm font-extrabold text-deep">Email</span>
+                        <input
+                          name="email"
+                          type="email"
+                          placeholder="Nhập email của bạn"
+                          className="min-h-14 w-full rounded-xl border border-[#d7e5de] bg-gray-50/50 px-4 text-base text-deep shadow-sm outline-none transition-all duration-300 placeholder:text-gray-400 focus:border-tech focus:bg-white focus:ring-4 focus:ring-tech/10"
+                        />
+                      </span>
+                    </label>
+
+                    <label className="flex gap-4">
+                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                        <LayoutGrid className="h-5 w-5" />
+                      </span>
+                      <span className="flex-1">
+                        <span className="mb-1 block text-sm font-extrabold text-deep">
+                          Bạn muốn bắt đầu từ đâu?
+                        </span>
+                        <select
+                          name="need"
+                          defaultValue=""
+                          className="min-h-14 w-full cursor-pointer rounded-xl border border-[#d7e5de] bg-gray-50/50 px-4 text-base text-medium shadow-sm outline-none transition-all duration-300 focus:border-tech focus:bg-white focus:ring-4 focus:ring-tech/10"
+                        >
+                          <option disabled value="">
+                            Chọn hạng mục phù hợp
+                          </option>
+                          <option>Software</option>
+                          <option>Security</option>
+                          <option>Dashboard</option>
+                          <option>AI Agent</option>
+                          <option>Chưa rõ, cần tư vấn</option>
+                        </select>
+                      </span>
+                    </label>
+
+                    <label className="flex gap-4">
+                      <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e6f3ee] text-tech shadow-[0_10px_24px_rgba(22,126,84,0.12)]">
+                        <PenLine className="h-5 w-5" />
+                      </span>
+                      <span className="flex-1">
+                        <span className="mb-1 block text-sm font-extrabold text-deep">
+                          Mô tả quy trình hiện tại
+                        </span>
+                        <textarea
+                          name="process"
+                          rows={4}
+                          className="w-full resize-none rounded-xl border border-[#d7e5de] bg-gray-50/50 px-4 py-3 text-base leading-8 text-deep shadow-sm outline-none transition-all duration-300 placeholder:text-gray-400 focus:border-tech focus:bg-white focus:ring-4 focus:ring-tech/10"
+                          placeholder="Ví dụ: đang quản lý lead bằng Google Sheet và Zalo, không biết ai follow-up, muốn có CRM mini và AI tóm tắt nhu cầu khách..."
+                        />
+                      </span>
+                    </label>
+
                     <button
-                      type="button"
-                      onClick={() => setSubmitted(false)}
-                      className="rounded-lg border border-line bg-white px-5 py-3 text-sm font-bold text-deep transition-colors duration-300 hover:bg-mint"
+                      type="submit"
+                      className="group flex min-h-16 w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#167e54] to-[#20a36e] px-6 text-base font-extrabold text-white shadow-[0_10px_25px_-5px_rgba(22,126,84,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:from-[#116844] hover:to-[#1a8b5c] sm:text-lg"
                     >
-                      Gửi yêu cầu khác
+                      Gửi quy trình để nhận roadmap
+                      <Send className="h-6 w-6 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                     </button>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="grid gap-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <label className="grid gap-2 text-sm font-bold text-deep">
-                      Họ tên
-                      <input
-                        name="name"
-                        required
-                        className="min-h-12 rounded-lg border border-line bg-white px-4 text-sm outline-none transition-colors duration-300 focus:border-tech"
-                      />
-                    </label>
-                    <label className="grid gap-2 text-sm font-bold text-deep">
-                      Số điện thoại / Zalo
-                      <input
-                        name="phone"
-                        required
-                        className="min-h-12 rounded-lg border border-line bg-white px-4 text-sm outline-none transition-colors duration-300 focus:border-tech"
-                      />
-                    </label>
-                  </div>
-                  <label className="grid gap-2 text-sm font-bold text-deep">
-                    Email
-                    <input
-                      name="email"
-                      type="email"
-                      className="min-h-12 rounded-lg border border-line bg-white px-4 text-sm outline-none transition-colors duration-300 focus:border-tech"
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm font-bold text-deep">
-                    Bạn muốn bắt đầu từ đâu?
-                    <select
-                      name="need"
-                      className="min-h-12 rounded-lg border border-line bg-white px-4 text-sm outline-none transition-colors duration-300 focus:border-tech"
-                    >
-                      <option>Gửi quy trình để nhận roadmap</option>
-                      <option>Xây phần mềm riêng / web app</option>
-                      <option>Audit hoặc nâng cấp bảo mật</option>
-                      <option>Làm dashboard dữ liệu</option>
-                      <option>Triển khai AI / Agentic AI</option>
-                      <option>Chưa rõ, cần tư vấn</option>
-                    </select>
-                  </label>
-                  <label className="grid gap-2 text-sm font-bold text-deep">
-                    Mô tả quy trình hiện tại
-                    <textarea
-                      name="process"
-                      rows={5}
-                      className="resize-none rounded-lg border border-line bg-white px-4 py-3 text-sm leading-7 outline-none transition-colors duration-300 focus:border-tech"
-                      placeholder="Ví dụ: đang quản lý lead bằng Google Sheet và Zalo, không biết ai follow-up, muốn có CRM mini và AI tóm tắt nhu cầu khách..."
-                    />
-                  </label>
-                  <button
-                    type="submit"
-                    className="group mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-tech px-6 text-sm font-extrabold text-white transition-all duration-300 hover:bg-deep"
-                  >
-                    Gửi quy trình để nhận roadmap
-                    <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </button>
-                </form>
-              )}
-            </LiquidGlassCard>
+
+                    <div className="flex items-center justify-center gap-2 text-center text-sm text-gray-500">
+                      <ShieldCheck className="h-4 w-4 shrink-0 text-tech" />
+                      <span>
+                        Thông tin của bạn được bảo mật tuyệt đối và chỉ dùng để tư vấn giải pháp.
+                      </span>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
           </div>
         </SectionReveal>
 
