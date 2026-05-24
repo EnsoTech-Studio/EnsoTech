@@ -5,7 +5,7 @@ import '../index.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://enso.io.vn';
 const siteDescription =
-  'EnsoTech Studio xây phần mềm riêng, audit/nâng cấp bảo mật, dashboard dữ liệu và AI/Agentic AI cho doanh nghiệp nhỏ, chủ shop và startup.';
+  'Tư vấn roadmap và xây phần mềm theo yêu cầu: audit bảo mật, dashboard dữ liệu, AI/Agentic AI. Gửi quy trình để nhận hướng triển khai rõ ràng.';
 
 const beVietnam = Be_Vietnam_Pro({
   subsets: ['latin', 'vietnamese'],
@@ -17,7 +17,7 @@ const beVietnam = Be_Vietnam_Pro({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'EnsoTech Studio | Phần mềm riêng, Security Audit, Dashboard và AI Agent',
+    default: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
     template: '%s | EnsoTech Studio',
   },
   description: siteDescription,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: 'vi_VN',
     url: '/',
     siteName: 'EnsoTech Studio',
-    title: 'EnsoTech Studio | Xây hệ thống an toàn hơn, thông minh hơn',
+    title: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
     description: siteDescription,
     images: [
       {
@@ -57,13 +57,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EnsoTech Studio | Software, Security Audit, Dashboard và AI Agent',
+    title: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
     description: siteDescription,
     images: ['/assets/og-image.png'],
   },
   icons: {
-    icon: [{ url: '/assets/favicon-logo-notext-rounded.png', type: 'image/png' }],
-    apple: [{ url: '/assets/favicon-logo-notext-rounded.png', type: 'image/png' }],
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon.png', sizes: '512x512', type: 'image/png' },
+      { url: '/assets/favicon-logo-notext-rounded.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: [{ url: '/favicon.ico' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '512x512', type: 'image/png' }],
   },
   robots: {
     index: true,
