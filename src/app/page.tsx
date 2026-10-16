@@ -1,97 +1,60 @@
-import Script from 'next/script';
-import App from '../App';
+import { CONTACT, SITE } from '../content/vi'
+import { Analytics } from '../voyage/analytics'
+import { Faq, Pain, Process, Project, Scenarios, Services, Why } from '../voyage/chapters'
+import { FloatingCta, Header, Hud } from '../voyage/chrome'
+import { Contact } from '../voyage/contact.client'
+import { EnvBack, EnvFront } from '../voyage/env'
+import { Footer } from '../voyage/footer'
+import { Hero } from '../voyage/hero'
+import { Voyage } from '../voyage/voyage.client'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://enso.io.vn';
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${siteUrl}/#website`,
-  name: 'EnsoTech Studio',
-  alternateName: ['EnsoTech', 'EnsoTech Studio Vietnam'],
-  url: siteUrl,
-  inLanguage: 'vi-VN',
-  publisher: {
-    '@id': `${siteUrl}/#organization`,
-  },
-};
-
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  '@id': `${siteUrl}/#organization`,
-  name: 'EnsoTech Studio',
-  alternateName: 'EnsoTech',
-  url: siteUrl,
-  logo: `${siteUrl}/assets/favicon-logo-notext-rounded.png`,
-  image: `${siteUrl}/assets/og-image.png`,
-  description:
-    'EnsoTech Studio tư vấn roadmap và xây phần mềm theo yêu cầu: audit bảo mật, dashboard dữ liệu, AI/Agentic AI cho doanh nghiệp nhỏ, chủ shop và startup.',
-  email: 'ensotechstudio@gmail.com',
-  telephone: '+84364151304',
-  areaServed: {
-    '@type': 'Country',
-    name: 'Vietnam',
-  },
-  sameAs: ['https://m.me/61590018866554'],
-  contactPoint: [
-    {
-      '@type': 'ContactPoint',
-      contactType: 'sales',
-      email: 'ensotechstudio@gmail.com',
-      telephone: '+84364151304',
-      availableLanguage: ['vi', 'en'],
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, url: SITE.url, inLanguage: 'vi-VN' },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${SITE.url}/#organization`,
+    name: SITE.name,
+    url: SITE.url,
+    logo: `${SITE.url}/assets/favicon-logo-notext-rounded.png`,
+    image: `${SITE.url}/assets/og-image.png`,
+    description: SITE.description,
+    email: CONTACT.email,
+    telephone: CONTACT.phoneE164,
+    areaServed: { '@type': 'Country', name: 'Vietnam' },
+    sameAs: [CONTACT.messengerHref],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: SITE.name,
+      itemListElement: SITE.services.map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
     },
-  ],
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'EnsoTech Studio services',
-    itemListElement: [
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Phần mềm theo yêu cầu',
-          description: 'Xây web app, hệ thống quản lý nội bộ, CRM mini và workflow riêng.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Security audit và nâng cấp bảo mật',
-          description: 'Rà soát phân quyền, dữ liệu, API, backup và audit log.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Dashboard dữ liệu',
-          description: 'Dựng dashboard cho KPI, doanh thu, đơn hàng, kho và khách hàng.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'AI Agent và Agentic AI',
-          description: 'Thiết kế AI agent có guardrails, log và bước duyệt khi cần.',
-        },
-      },
-    ],
   },
-};
+]
 
 export default function HomePage() {
   return (
     <>
-      <Script
-        id="ensotech-organization-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([websiteJsonLd, organizationJsonLd]) }}
-      />
-      <App />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <div aria-hidden className="paper" />
+      <Header />
+      <Voyage back={<EnvBack />} front={<EnvFront />}>
+        <main className="hz:contents">
+          <Hero />
+          <Pain />
+          <Services />
+          <Project />
+          <Scenarios />
+          <Process />
+          <Why />
+          <Faq />
+          <Contact />
+        </main>
+        <Footer />
+      </Voyage>
+      <Hud />
+      <FloatingCta />
+      <div aria-hidden className="grain" />
+      <Analytics />
     </>
-  );
+  )
 }
