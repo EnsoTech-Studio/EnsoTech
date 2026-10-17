@@ -4,7 +4,7 @@ import { drawDragon, dragonPath } from './dragon'
 import { Koi, splash } from './koi'
 import { drawLife } from './life'
 import { buildScene, type Anchor, type Scene } from './scene'
-import { InkBatch, Path, countVerts, inkMaterial, inkUniforms, type Pt } from './stroke'
+import { InkBatch, Path, inkMaterial, inkUniforms, resample, stepOf, type Pt } from './stroke'
 
 /** Trạng thái một khung hình do painting.client tính. Toạ độ là px thế giới (tờ giấy). */
 export interface Frame {
@@ -52,6 +52,15 @@ export function createEngine(canvas: HTMLCanvasElement) {
   mesh(koiB, 1)
   mesh(splB, 2)
   mesh(drB, 3)
+  // Dịch shader ở luồng nền (KHR_parallel_shader_compile) trong lúc dựng cảnh; chưa xong thì chưa vẽ,
+  // khỏi khựng ~1 giây ở khung đầu. Máy không có tiện ích đó hoặc lỗi thì cứ vẽ, three tự dịch đồng bộ như cũ
+  // (hỏi has() trước: compileAsync tự gọi get() và in cảnh báo ra console trên máy thiếu tiện ích).
+  let ready = !renderer.extensions.has('KHR_parallel_shader_compile')
+  if (!ready)
+    renderer.compileAsync(scene, cam).then(
+      () => (ready = true),
+      () => (ready = true),
+    )
 
   let statics: THREE.Mesh[] = []
   let sc: Scene | null = null
@@ -63,6 +72,11 @@ export function createEngine(canvas: HTMLCanvasElement) {
   let gust = 0
 
   return {
+    /** Đã có cảnh và shader dịch xong: khung kế tiếp sẽ vẽ thật. */
+    get ready() {
+      return ready && !!sc
+    },
+
     size(cw: number, ch: number) {
       w = Math.max(1, cw)
       h = Math.max(1, ch)
@@ -78,8 +92,9 @@ export function createEngine(canvas: HTMLCanvasElement) {
       sc = buildScene(anchors, unit, vh)
       for (const [list, order] of [[sc.back, 0], [sc.front, 4]] as const) {
         if (!list.length) continue
-        const b = new InkBatch(countVerts(list))
-        for (const s of list) b.add(s)
+        const ps = list.map((s) => resample(s.pts, stepOf(s)))
+        const b = new InkBatch(ps.reduce((n, p) => n + p.length, 0))
+        list.forEach((s, i) => b.add(s, ps[i]))
         b.commit()
         statics.push(mesh(b, order))
       }
@@ -92,7 +107,7 @@ export function createEngine(canvas: HTMLCanvasElement) {
     },
 
     frame(fr: Frame) {
-      if (!sc) return
+      if (!sc || !ready) return
       uniforms.uDraw.value = fr.draw
       uniforms.uPx.value = fr.z * renderer.getPixelRatio()
       uniforms.uStage.value.set(fr.stage[0], fr.stage[1])

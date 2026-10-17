@@ -893,6 +893,8 @@ button.seal:disabled {
     height: calc(140 * var(--U));
     transform-origin: 0 0;
     transform: translate3d(calc(50vw - 50 * var(--U)), calc(50svh - 30 * var(--U)), 0);
+    /* Máy quay lùi xa/sà gần đổi scale mỗi khung: giữ ảnh chữ đã vẽ (độ phóng ≤ 1), khỏi vẽ lại cả tờ tranh → bớt giật. */
+    will-change: transform;
     font-size: calc(1.32 * var(--U));
   }
   .tp:not([data-flat]) :is(.tp-sec, .tp-falls, .tp-fstage) {

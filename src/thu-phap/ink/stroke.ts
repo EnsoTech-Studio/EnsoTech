@@ -78,8 +78,8 @@ export function resample(pts: readonly Pt[], step: number): number[] {
 
 export const stepOf = (s: Stroke) => s.step ?? Math.min(12, Math.max(1.5, s.w * 0.6))
 
-/** Số đỉnh đúng bằng số đỉnh InkBatch.add sẽ tạo: để cấp phát lô tĩnh vừa khít. */
-export const countVerts = (list: readonly Stroke[]) => list.reduce((n, s) => n + resample(s.pts, stepOf(s)).length, 0)
+/** Độ dài cộng dồn dọc nét, dùng chung giữa các lần add (không cấp phát mỗi nét). */
+let lenBuf = new Float32Array(1024)
 
 /** Một lô nét gộp chung một lần vẽ. Tĩnh: dựng một lần. Động (cá, rồng, giọt mực): reset → add → commit mỗi khung hình. */
 export class InkBatch {
@@ -109,12 +109,17 @@ export class InkBatch {
     this.ni = 0
   }
 
-  add(s: Stroke) {
-    const p = resample(s.pts, stepOf(s))
+  /** p: dãy điểm đã lấy mẫu sẵn (lô tĩnh đếm đỉnh trước rồi dùng lại, khỏi lấy mẫu hai lần). */
+  add(s: Stroke, p = resample(s.pts, stepOf(s))) {
     const m = p.length / 2
     if (m < 2 || this.nv + m * 2 > this.maxVerts) return
-    const len = new Float32Array(m)
-    for (let i = 1; i < m; i++) len[i] = len[i - 1] + Math.hypot(p[i * 2] - p[i * 2 - 2], p[i * 2 + 1] - p[i * 2 - 1])
+    if (lenBuf.length < m) lenBuf = new Float32Array(m * 2)
+    const len = lenBuf
+    len[0] = 0
+    for (let i = 1; i < m; i++) {
+      const dx = p[i * 2] - p[i * 2 - 2], dy = p[i * 2 + 1] - p[i * 2 - 1]
+      len[i] = len[i - 1] + Math.sqrt(dx * dx + dy * dy)
+    }
     const L = Math.max(len[m - 1], 1e-3)
     const press = s.press ?? brush
     const [r, g, b] = s.col ?? INK
@@ -125,7 +130,7 @@ export class InkBatch {
     for (let i = 0; i < m; i++) {
       const a = Math.max(0, i - 1), c = Math.min(m - 1, i + 1)
       let tx = p[c * 2] - p[a * 2], ty = p[c * 2 + 1] - p[a * 2 + 1]
-      const tl = Math.hypot(tx, ty) || 1
+      const tl = Math.sqrt(tx * tx + ty * ty) || 1
       tx /= tl
       ty /= tl
       const u = len[i] / L
@@ -161,14 +166,23 @@ export class InkBatch {
         this.nv++
       }
     }
+    const idx = this.idx
     for (let i = 0; i < m - 1; i++) {
-      const q = base + i * 2
-      this.idx.set([q, q + 1, q + 2, q + 1, q + 3, q + 2], this.ni)
+      const q = base + i * 2, j = this.ni
+      idx[j] = q
+      idx[j + 1] = q + 1
+      idx[j + 2] = q + 2
+      idx[j + 3] = q + 1
+      idx[j + 4] = q + 3
+      idx[j + 5] = q + 2
       this.ni += 6
     }
   }
 
   commit() {
+    this.geometry.setDrawRange(0, this.ni)
+    // Lô rỗng thì thôi đẩy: three gọi bufferSubData(…, 0) mà WebGL2 hiểu độ dài 0 là "đến hết mảng" → đẩy nguyên bộ đệm mỗi khung.
+    if (!this.nv) return
     for (const name of Object.keys(FLOATS)) {
       const attr = this.geometry.getAttribute(name) as THREE.BufferAttribute
       attr.clearUpdateRanges()
@@ -179,7 +193,6 @@ export class InkBatch {
     index.clearUpdateRanges()
     index.addUpdateRange(0, this.ni)
     index.needsUpdate = true
-    this.geometry.setDrawRange(0, this.ni)
   }
 
   get vertices() {
@@ -250,6 +263,7 @@ export const inkUniforms = () => ({
   /** Gió do tốc độ cuộn, khoảng -1..1. */
   uWind: { value: 0 },
   uT: { value: 0 },
+  uOct: { value: 4 },
 })
 
 const vert = /* glsl */ `
@@ -303,7 +317,9 @@ float vn(vec2 p) {
   f = f * f * (3.0 - 2.0 * f);
   return mix(mix(h21(i), h21(i + vec2(1, 0)), f.x), mix(h21(i + vec2(0, 1)), h21(i + 1.0), f.x), f.y);
 }
-float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a * vn(p); p = p * 2.03 + 17.1; a *= 0.5; } return s; }
+// Số lớp lấy từ uniform (= 4): trình dịch D3D11 trên Windows khỏi trải phẳng vòng lặp, dịch nhanh gấp ~2 (1 s → 0,55 s).
+uniform int uOct;
+float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < uOct; i++) { s += a * vn(p); p = p * 2.03 + 17.1; a *= 0.5; } return s; }
 
 void main() {
   float u = vUv.x, v = vUv.y, av = abs(v);
