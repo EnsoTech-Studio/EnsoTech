@@ -1,0 +1,948 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Thuỷ mặc: mực trên giấy dó. Chàm = thông tin, son = hành động, vàng lá chỉ dành cho rồng ở màn cuối. */
+:root {
+  --paper: #f2eadb;
+  --paper-hi: #faf5ea;
+  --ink: #19211f;
+  --wash: #7e8a82;
+  --cham: #2d5e78;
+  --son: #b8322a;
+  --gold: #c9a14a;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+  interpolate-size: allow-keywords;
+  --fin: 0;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+[data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+[data-chapter]:focus {
+  outline: none;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-be-vietnam), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 64rem) and (min-height: 37.5rem) {
+  /* Đi ngang thì thước hành trình thay cho thanh cuộn dọc. Trang chi tiết dự án giữ thanh cuộn. */
+  html:not(:has(.page-detail)) {
+    scrollbar-width: none;
+  }
+  html:not(:has(.page-detail))::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+:focus-visible {
+  outline: 2px solid var(--son);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.font-display {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Giấy, hạt mực ---------- */
+
+/* Giấy dó: sáng ở giữa, ngả vàng ở mép. Cố định sau mọi lớp. */
+.paper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 85% at 50% 42%, #f8f4ec 0%, rgb(242 234 219 / 0) 62%),
+    radial-gradient(140% 110% at 50% 50%, rgb(242 234 219 / 0) 55%, rgb(224 204 166 / 0.5) 100%);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .09 0 0 0 -1.6 1.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Môi trường dọc đường đi (sau lớp 3D) ----------
+   Engine ghi --c{i}/--w{i} (đầu & bề dài chương i theo trục đi) và --cs/--ws (sân khấu màn cuối) lên .env.
+   Mỗi mảnh .piece trỏ tới một chương qua --at/--len; --ext nới mảnh ra hai bên để tan vào chương kề. */
+.env {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+
+}
+.env[data-ready] {
+  opacity: 1;
+}
+.env-track {
+  position: absolute;
+  inset: 0;
+}
+.piece {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: calc(var(--at, 0px) - var(--ext, 0px));
+  width: calc(var(--len, 0px) + 2 * var(--ext, 0px));
+}
+@media (min-width: 64rem) and (min-height: 37.5rem) {
+  .env {
+    position: fixed;
+  }
+  .env-track {
+    will-change: transform;
+  }
+  /* Mảnh tan vào chương kề trên quãng nới ra (--ext), không có mép cắt thẳng. */
+  .piece {
+    mask-image: linear-gradient(to right, transparent, #000 calc(2 * var(--ext, 0px)), #000 calc(100% - 2 * var(--ext, 0px)), transparent);
+  }
+}
+@media not all and (min-width: 64rem) and (min-height: 37.5rem) {
+  .piece {
+    left: 0;
+    width: 100%;
+    top: calc(var(--at, 0px) - var(--ext, 0px));
+    height: calc(var(--len, 0px) + 2 * var(--ext, 0px));
+    mask-image: linear-gradient(to bottom, transparent, #000 calc(2 * var(--ext, 0px)), #000 calc(100% - 2 * var(--ext, 0px)), transparent);
+  }
+  .hz-only {
+    display: none;
+  }
+}
+
+/* Núi xa kiểu thanh lục sơn thuỷ: rặng thạch thanh xa, rặng thạch lục gần viền kim tuyến, chân đất vàng; trôi chậm hơn nội dung. */
+.hills {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 30svh;
+  width: 100%;
+  opacity: 0.8;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='300' viewBox='0 0 1600 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%235d8fa8' stop-opacity='.62'/%3E%3Cstop offset='.8' stop-color='%235d8fa8' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232f7c68' stop-opacity='.72'/%3E%3Cstop offset='.42' stop-color='%236aa58a' stop-opacity='.42'/%3E%3Cstop offset='.78' stop-color='%23c9a46a' stop-opacity='.2'/%3E%3Cstop offset='1' stop-color='%23c9a46a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23a)' d='M0 160 C60 130 100 64 160 54 C214 46 240 112 300 122 C362 132 384 34 452 22 C522 12 544 104 612 112 C690 122 722 72 792 62 C868 52 900 132 980 126 C1058 120 1082 42 1160 36 C1238 30 1262 112 1332 120 C1410 128 1440 72 1500 82 C1560 92 1582 142 1600 160 V300 H0Z'/%3E%3Cpath fill='url(%23b)' d='M0 212 C70 196 120 150 196 146 C270 142 300 104 372 100 C446 96 470 168 548 172 C628 176 660 120 740 112 C820 104 850 170 930 176 C1010 182 1050 130 1130 126 C1210 122 1240 178 1320 184 C1400 190 1450 150 1520 160 C1570 168 1590 200 1600 212 V300 H0Z'/%3E%3Cpath fill='none' stroke='%23c9a14a' stroke-opacity='.55' stroke-width='1.6' d='M0 212 C70 196 120 150 196 146 C270 142 300 104 372 100 C446 96 470 168 548 172 C628 176 660 120 740 112 C820 104 850 170 930 176 C1010 182 1050 130 1130 126 C1210 122 1240 178 1320 184 C1400 190 1450 150 1520 160 C1570 168 1590 200 1600 212'/%3E%3Cpath fill='%232d6b62' fill-opacity='.14' d='M0 258 C120 238 220 222 330 232 C440 242 520 206 640 214 C760 222 830 252 960 244 C1090 236 1180 214 1300 226 C1420 238 1490 270 1600 258 V300 H0Z'/%3E%3C/svg%3E")
+    repeat-x 0 100% / auto 100%;
+  mask-image: linear-gradient(to bottom, transparent, #000 22%);
+}
+
+/* Đêm ở chương "Vì sao": trời chàm thẫm, trăng sáng phía trên. Mép tan vào giấy nằm TRONG chương (chương có lề rộng), nên chữ chương kề vẫn trên nền giấy. */
+.night {
+  --fade: 22vw;
+  background:
+    radial-gradient(40% 50% at 72% 30%, rgb(93 143 168 / 0.45), transparent 70%),
+    linear-gradient(to bottom, #0c1a22, #10262c 55%, #16302c);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+}
+@media not all and (min-width: 64rem) and (min-height: 37.5rem) {
+  .night {
+    --fade: 18svh;
+    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  }
+}
+
+/* Mây tường vân & sương: trôi chậm. */
+.drift-slow {
+  animation: drift-x 26s ease-in-out infinite alternate;
+}
+@keyframes drift-x {
+  from {
+    translate: -2.5vw 0;
+  }
+  to {
+    translate: 2.5vw 0;
+  }
+}
+/* Cành mai đung đưa quanh chỗ chìa vào; cánh mai chao theo gió rồi đậu xuống mặt nước. Giảm chuyển động: đứng yên tại chỗ. */
+.bough {
+  animation: bough 11s ease-in-out infinite alternate;
+  transform-origin: 0 0;
+}
+@keyframes bough {
+  from {
+    rotate: -0.6deg;
+  }
+  to {
+    rotate: 0.9deg;
+  }
+}
+.petal {
+  position: absolute;
+  width: 0.62rem;
+  aspect-ratio: 1.3;
+  border-radius: 60% 10%;
+  background: linear-gradient(135deg, #fbe7a1, #e9a92e);
+  opacity: 0.85;
+  animation: petal 19s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0) * -2.7s);
+}
+@keyframes petal {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  8% {
+    opacity: 0.9;
+  }
+  25% {
+    transform: translate(2.5vw, 12svh) rotate(160deg);
+  }
+  50% {
+    transform: translate(-1vw, 26svh) rotate(300deg);
+  }
+  75% {
+    transform: translate(3vw, 40svh) rotate(470deg);
+  }
+  92% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(1.5vw, 52svh) rotate(600deg) scaleY(0.4);
+  }
+}
+/* Gió: xô nghiêng (skew) chứ không xoay, nên ngọn đi xa còn gốc đứng yên như lá thật. */
+.sway {
+  animation: sway 6.5s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+  animation-delay: calc(var(--d, 0) * -1.3s);
+}
+@keyframes sway {
+  0% {
+    transform: skewX(5deg);
+  }
+  55% {
+    transform: skewX(-3.5deg);
+  }
+  100% {
+    transform: skewX(-6deg) scaleY(0.985);
+  }
+}
+
+/* Logo, thước hành trình: engine gắn data-dark khi dải đêm trôi qua dưới chúng. */
+[data-ink] {
+  transition:
+    color 0.8s var(--ease),
+    background-color 0.8s var(--ease);
+}
+[data-ink][data-dark] {
+  color: var(--paper);
+}
+.pill[data-dark] {
+  background-color: rgb(16 38 44 / 0.6);
+  border-color: rgb(242 234 219 / 0.16);
+}
+nav[data-dark] a:not([data-active]) {
+  color: rgb(242 234 219 / 0.82);
+}
+.hud-line[data-dark] {
+  background-color: rgb(242 234 219 / 0.25);
+}
+.hud-line[data-dark] > [data-hud-bar] {
+  background-color: var(--paper);
+}
+/* Gợn nước là cá đớp mồi; cá đã hoá rồng thì mặt hồ lặng (không thì gợn trùng ngay miệng rồng bay ngang). */
+html[data-dragon] .ring,
+html[data-dragon] .hud-koi,
+html:not([data-dragon]) .hud-dragon {
+  display: none;
+}
+.ring {
+  animation: ring 6s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  animation-delay: calc(var(--d, 0) * -2s);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes ring {
+  from {
+    scale: 0.2;
+    opacity: 0.9;
+  }
+  to {
+    scale: 1.6;
+    opacity: 0;
+  }
+}
+
+/* Màn cuối: bình minh hé ra theo --fin (0 → 1), mây kéo vào khi rồng thành hình. */
+.dawn {
+  opacity: clamp(0, var(--fin) * 2.2 - 0.9, 1);
+}
+.clouds-in {
+  opacity: clamp(0, var(--fin) * 3 - 1.7, 1);
+  translate: calc((1 - clamp(0, var(--fin) * 1.6 - 0.6, 1)) * 6vw) 0;
+}
+/* Khung dính màn hình của sân khấu cuối: dọc thì đứng yên suốt 240svh cuộn qua; ngang thì vốn đã bằng màn hình. */
+.stage-pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+/* Dòng chảy ngược chiều cá: một ô nét cọ lặp lại, trượt đúng một ô mỗi vòng nên không giật. */
+.flow {
+  width: calc(100% + 600px);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='340' viewBox='0 0 600 340' preserveAspectRatio='none'%3E%3Cg fill='%2319211f'%3E%3Cpath fill-opacity='.22' d='M20 60c90-6 200-9 300-4 60 3 110 1 150-3-50 9-110 12-160 11-100-2-200 0-290-4Z'/%3E%3Cpath fill-opacity='.15' d='M260 128c80-5 170-6 240-1 40 3 70 2 96 0-30 6-70 8-110 7-80-2-150 0-226-6Z'/%3E%3Cpath fill-opacity='.26' d='M-40 196c120-8 240-8 330-2 40 3 80 2 110-2-40 10-90 12-130 11-110-1-210 0-310-7Z'/%3E%3Cpath fill-opacity='.14' d='M330 252c70-4 150-5 210-1 30 2 60 1 80-1-26 6-60 7-96 6-70-1-130 0-194-4Z'/%3E%3Cpath fill-opacity='.18' d='M60 300c60-3 140-4 200 0 20 1 40 0 56-1-20 5-50 6-80 5-60-1-120 0-176-4Z'/%3E%3C/g%3E%3C/svg%3E")
+    0 0 / 600px 340px repeat;
+  animation: flow 7s linear infinite;
+}
+.flow.foam {
+  filter: invert(1) brightness(1.1);
+  background-size: 600px 220px;
+  animation-duration: 4.2s;
+}
+@keyframes flow {
+  to {
+    translate: -600px 0;
+  }
+}
+/* Nước trong: vệt nắng xiên chàm nhạt, tan dần về đáy. */
+.shafts {
+  background: repeating-linear-gradient(104deg, transparent 0 7vw, rgb(45 94 120 / 0.07) 7vw 10vw, transparent 10vw 15vw, rgb(45 94 120 / 0.04) 15vw 16vw, transparent 16vw 23vw);
+  mask-image: linear-gradient(to bottom, #000, transparent 78%);
+}
+/* Sương: trên giấy là vệt chàm rất nhạt, trên vách mực là khoảng trắng (như tranh thuỷ mặc chừa giấy). */
+.mist {
+  background:
+    radial-gradient(45% 55% at 30% 62%, rgb(250 245 234 / 0.95), transparent 72%),
+    radial-gradient(38% 48% at 72% 52%, rgb(250 245 234 / 0.85), transparent 72%),
+    radial-gradient(60% 70% at 50% 60%, rgb(45 94 120 / 0.09), transparent 75%);
+  filter: blur(6px);
+}
+/* Mây sáng: vài quầng trắng ấm chồng lên nhau, đỉnh bắt nắng hồng vàng, bụng có bóng xanh xám cho ra khối. Không viền. */
+.bank {
+  position: absolute;
+  aspect-ratio: 2.6;
+  background:
+    radial-gradient(30% 46% at 56% 38%, rgb(255 247 234 / 0.98), transparent 72%),
+    radial-gradient(28% 40% at 30% 46%, rgb(255 238 216 / 0.95), transparent 72%),
+    radial-gradient(24% 36% at 78% 52%, rgb(255 242 224 / 0.92), transparent 72%),
+    radial-gradient(50% 30% at 50% 66%, rgb(250 245 234 / 0.95), transparent 75%),
+    radial-gradient(40% 30% at 50% 24%, rgb(247 200 150 / 0.55), transparent 75%),
+    radial-gradient(52% 26% at 50% 80%, rgb(93 120 130 / 0.22), transparent 75%);
+  filter: blur(5px);
+}
+/* Trăng trên mặt nước (chương "Vì sao"): các vệt sáng nhấp nháy lệch pha. */
+.shimmer {
+  animation: shimmer 3.2s ease-in-out infinite alternate;
+}
+.shimmer.alt {
+  animation-delay: -1.6s;
+}
+@keyframes shimmer {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Thác dự phòng (máy không có WebGL): ẩn khi cảnh 3D đã chạy. */
+html[data-scene] .no-gl {
+  display: none;
+}
+.fall-sheet {
+  background: repeating-linear-gradient(90deg, rgb(25 33 31 / 0.14) 0 2px, transparent 2px 9px, rgb(25 33 31 / 0.08) 9px 10px, transparent 10px 17px),
+    linear-gradient(to right, transparent, #faf5ea 18%, #faf5ea 82%, transparent);
+  background-size: 100% 200%, 100% 100%;
+  animation: fall 1.4s linear infinite;
+}
+@keyframes fall {
+  to {
+    background-position: 0 100%, 0 0;
+  }
+}
+
+/* ---------- Chữ hiện dần (engine gắn data-in khi vào khung nhìn) ---------- */
+
+.reveal {
+  opacity: 0;
+  translate: 0 1.4rem;
+  transition:
+    opacity 1s var(--ease),
+    translate 1.2s var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms + 120ms);
+}
+[data-in] .reveal,
+.reveal[data-in] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Từng chữ trồi lên khỏi mặt nước. Chỉ cắt trục dọc, có đệm để dấu tiếng Việt và chữ nghiêng không bị xén. */
+.w {
+  display: inline-block;
+  overflow-x: visible;
+  overflow-y: clip;
+  padding-block: 0.2em 0.1em;
+  margin-block: -0.2em -0.1em;
+  vertical-align: top;
+}
+.w > span {
+  display: inline-block;
+  translate: 0 110%;
+  rotate: 3deg;
+  transform-origin: 0 100%;
+  transition:
+    translate 1.3s var(--ease),
+    rotate 1.3s var(--ease);
+  transition-delay: calc(var(--i, 0) * 55ms + 80ms);
+}
+[data-in] .w > span {
+  translate: 0 0;
+  rotate: 0deg;
+}
+@starting-style {
+  [data-in] .reveal {
+    opacity: 0;
+    translate: 0 1.4rem;
+  }
+  [data-in] .w > span {
+    translate: 0 110%;
+    rotate: 3deg;
+  }
+}
+
+/* Chữ nhấn: một nét cọ mực nhạt quệt dưới chữ, vẽ dần từ trái sang. Mỗi dòng một nét (box-decoration-break). */
+.hl {
+  font-style: italic;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath d='M4 26 C40 14 120 12 200 14 C280 16 350 12 396 18 C390 26 330 30 250 31 C170 33 80 34 10 36 C2 34 0 30 4 26Z' fill='%23b8322a' fill-opacity='.2'/%3E%3C/svg%3E")
+    no-repeat 0 88% / 0% 0.42em;
+  transition: background-size 1.4s var(--ease) 1s;
+}
+[data-in] .hl {
+  background-size: 100% 0.42em;
+}
+@starting-style {
+  [data-in] .hl {
+    background-size: 0% 0.42em;
+  }
+}
+
+/* Chữ còn chờ chủ trang xác nhận: giữ nguyên văn, kèm dấu son nhỏ. Bỏ dấu = sửa chuỗi trong src/content/vi.ts. */
+.mk {
+  background: rgb(184 50 42 / 0.07);
+  color: var(--son);
+  font-family: var(--font-be-vietnam), system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: max(0.72em, 0.72rem);
+  letter-spacing: 0;
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  white-space: normal;
+}
+.mk::before {
+  content: "";
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin-right: 0.35em;
+  background: var(--son);
+  rotate: 45deg;
+  vertical-align: 0.12em;
+}
+.on-night .mk {
+  background: rgb(232 140 130 / 0.14);
+  color: #f0a59c;
+}
+.on-night .mk::before {
+  background: #f0a59c;
+}
+
+/* Dòng chảy ở chương "Cách làm việc" vẽ dần theo --sp (0 → 1 khi chương đi qua màn hình). Hé bằng clip, không dùng nét đứt. */
+.current {
+  clip-path: inset(-20px calc(100% - clamp(0%, (var(--sp, 1) - 0.1) * 170%, 100%)) -20px -20px);
+}
+
+@media (scripting: none) {
+  .reveal,
+  .w > span {
+    opacity: 1;
+    translate: none;
+    rotate: none;
+  }
+  .hl {
+    background-size: 100% 0.42em;
+  }
+  .lumen {
+    --rise: 0;
+  }
+  .env {
+    opacity: 1;
+  }
+}
+
+/* Thị sai trong chương (đi ngang). */
+@media (min-width: 64rem) and (min-height: 37.5rem) {
+  .drift {
+    translate: calc((var(--sp, 0.5) - 0.5) * var(--drift, -6vw)) 0;
+  }
+  .bob {
+    animation: bob 7s ease-in-out calc(var(--bob, 0) * -2.3s) infinite alternate;
+  }
+}
+@keyframes bob {
+  from {
+    transform: translateY(-0.7vh) rotate(-0.35deg);
+  }
+  to {
+    transform: translateY(0.7vh) rotate(0.35deg);
+  }
+}
+
+/* ---------- Thành phần ---------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cham);
+}
+.eyebrow::before {
+  content: "";
+  width: 2.2rem;
+  height: 3px;
+  border-radius: 3px 1px 2px 1px;
+  background: currentColor;
+  mask: linear-gradient(to right, #000 60%, transparent);
+}
+.muted {
+  color: rgb(25 33 31 / 0.72);
+}
+.on-night .muted {
+  color: rgb(242 234 219 / 0.74);
+}
+.on-night .eyebrow {
+  color: #9fb6c4;
+}
+
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.1rem;
+  padding-inline: 1.45rem;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  overflow: clip;
+  transition:
+    translate 0.5s var(--ease),
+    box-shadow 0.5s var(--ease),
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}
+.btn:hover {
+  translate: 0 -2px;
+}
+.btn:active {
+  translate: 0 1px;
+  transition-duration: 0.1s;
+}
+.arrow {
+  display: inline-block;
+  transition: translate 0.5s var(--ease);
+}
+.btn .arrow {
+  margin-left: 0.35rem;
+}
+a:hover .arrow {
+  translate: 3px 0;
+}
+a:hover .arrow-down {
+  translate: 0 3px;
+}
+
+/* Nút chính màu son như con dấu. Rê chuột: mực son loang ra từ con trỏ. */
+.btn-son {
+  color: var(--paper-hi);
+  background: var(--son);
+  box-shadow:
+    inset 0 -2px 0 rgb(0 0 0 / 0.12),
+    0 14px 30px -16px rgb(184 50 42 / 0.9);
+}
+.btn-son::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), #8f231d 0, #8f231d 30%, transparent 62%);
+  scale: 0;
+  transition: scale 0.7s var(--ease);
+}
+.btn-son:hover::after {
+  scale: 2.4;
+}
+.btn-son:hover {
+  box-shadow:
+    inset 0 -2px 0 rgb(0 0 0 / 0.12),
+    0 20px 40px -16px rgb(184 50 42 / 1);
+}
+
+.btn-line {
+  color: var(--ink);
+  border: 1px solid rgb(25 33 31 / 0.32);
+  background: rgb(250 245 234 / 0.55);
+  backdrop-filter: blur(6px);
+}
+.btn-line:hover {
+  color: var(--paper-hi);
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.link-ink {
+  text-decoration: underline;
+  text-decoration-color: rgb(25 33 31 / 0.3);
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.3s;
+}
+.link-ink:hover {
+  text-decoration-color: var(--son);
+}
+
+/* Thẻ giấy dó trong suốt nổi trên nước: cá bơi bên dưới thấy mờ qua giấy.
+   Engine đặt --mx/--my (con trỏ), --tx/--ty (-1..1, nghiêng có lò xo), --lean (nghiêng theo chiều cuộn). */
+@property --rise {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+.sheet {
+  background: linear-gradient(170deg, rgb(250 245 234 / 0.86), rgb(246 241 231 / 0.74));
+  border: 1px solid rgb(25 33 31 / 0.1);
+  backdrop-filter: blur(10px) saturate(1.05);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 1px 2px rgb(25 33 31 / 0.06),
+    0 26px 50px -30px rgb(25 33 31 / 0.5);
+}
+.lumen {
+  --rise: 1;
+  position: relative;
+  transform: perspective(1100px) translateZ(calc(var(--rise) * -7rem)) rotateX(calc(var(--ty, 0) * -6deg + var(--rise) * 26deg))
+    rotateY(calc(var(--tx, 0) * 8deg - var(--lean, 0) * 14deg));
+}
+.lumen.reveal {
+  transition:
+    opacity 1s var(--ease),
+    translate 1.2s var(--ease),
+    --rise 1.9s var(--ease),
+    scale 0.7s var(--ease);
+  transition-delay: calc(var(--bob, 0) * 90ms + 120ms), calc(var(--bob, 0) * 90ms + 120ms), calc(var(--bob, 0) * 90ms + 120ms), 0s;
+}
+[data-in] .lumen {
+  --rise: 0;
+}
+.lumen:hover {
+  scale: 1.02;
+}
+.lumen .float {
+  translate: calc(var(--tx, 0) * var(--z, 0) * 1px) calc(var(--ty, 0) * var(--z, 0) * 1px);
+}
+/* Vệt mực loang theo con trỏ + viền chàm sáng lên quanh con trỏ. */
+.lumen::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgb(45 94 120 / 0.1), transparent 50%);
+}
+.lumen::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgb(25 33 31 / 0.75), rgb(45 94 120 / 0.2) 55%, transparent 75%);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.lumen:hover::before,
+.lumen:hover::after {
+  opacity: 1;
+}
+/* Gợn sóng mực lan ra từ chỗ bấm (engine chèn <i class="ripple"> rồi tự gỡ). */
+.ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ripple::before,
+.ripple::after {
+  content: "";
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 30rem;
+  aspect-ratio: 1;
+  margin: -15rem;
+  border-radius: 50%;
+  border: 1.5px solid rgb(25 33 31 / 0.55);
+  background: radial-gradient(closest-side, rgb(45 94 120 / 0.1), transparent);
+  scale: 0;
+  animation:
+    ripple 1.6s cubic-bezier(0.2, 0.75, 0.35, 1) forwards,
+    fade 1.6s ease-in forwards;
+}
+.ripple::after {
+  border-width: 1px;
+  border-color: rgb(45 94 120 / 0.6);
+  background: none;
+  animation-delay: 0.16s;
+}
+@keyframes ripple {
+  to {
+    scale: 1;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Mẩu giấy ghi chú trôi giữa lau sậy: mép xé nhẹ, hơi ngả vàng. */
+.slip {
+  background: linear-gradient(175deg, #faf5ea, #f1ebdd);
+  box-shadow:
+    0 1px 1px rgb(25 33 31 / 0.08),
+    0 18px 30px -22px rgb(25 33 31 / 0.55);
+  clip-path: polygon(0 3%, 7% 0, 18% 2%, 31% 0, 46% 1.5%, 60% 0, 74% 2%, 88% 0, 100% 2.5%, 99% 30%, 100% 62%, 99% 97%, 86% 100%, 70% 98%, 52% 100%, 37% 98.5%, 21% 100%, 8% 98%, 0 100%, 1% 64%, 0 33%);
+}
+
+/* Chạm mẩu giấy = gật đầu: dấu son đóng xuống, nét tích vẽ ra. */
+.tick > svg:first-child {
+  scale: 0.75;
+  transition: scale 0.6s var(--ease);
+}
+.tick-mark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.45s var(--ease) 0.12s;
+}
+.slip:has(:checked) {
+  background: linear-gradient(175deg, #fcf6ee, #f3e5d8);
+}
+.slip:has(:checked) .tick > svg:first-child {
+  scale: 1;
+}
+.slip:has(:checked) .tick-mark path {
+  stroke-dashoffset: 0;
+}
+/* Gật đầu từ 2 điều trở lên: câu kết được quệt nét son như chữ nhấn. */
+.nod {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath d='M4 26 C40 14 120 12 200 14 C280 16 350 12 396 18 C390 26 330 30 250 31 C170 33 80 34 10 36 C2 34 0 30 4 26Z' fill='%23b8322a' fill-opacity='.26'/%3E%3C/svg%3E")
+    no-repeat 0 90% / 0% 0.45em;
+  transition: background-size 1.2s var(--ease);
+}
+.pain:has(li:has(:checked) ~ li:has(:checked)) .nod {
+  background-size: 100% 0.45em;
+}
+
+/* Ô nhập: một nét mực dưới chân. */
+.field {
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.55rem 0.1rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgb(25 33 31 / 0.28);
+  color: var(--ink);
+  font-size: 1rem;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.4s var(--ease);
+}
+.field::placeholder {
+  color: rgb(126 138 130 / 0.85);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 1px 0 0 var(--ink);
+}
+.field[aria-invalid="true"] {
+  border-color: var(--son);
+  box-shadow: 0 1px 0 0 var(--son);
+}
+
+/* Hỏi đáp: mở ra mượt (trình duyệt hỗ trợ ::details-content), không thì mở ngay. */
+.qa summary {
+  list-style: none;
+  cursor: pointer;
+}
+.qa summary::-webkit-details-marker {
+  display: none;
+}
+.qa::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 0.55s var(--ease),
+    content-visibility 0.55s allow-discrete;
+}
+.qa[open]::details-content {
+  block-size: auto;
+}
+.qa .plus {
+  transition: rotate 0.5s var(--ease);
+}
+.qa[open] .plus {
+  rotate: 45deg;
+}
+
+[popover].pop {
+  margin: 0;
+  padding: 0.5rem;
+  color: var(--ink);
+  background: var(--paper-hi);
+  border: 1px solid rgb(25 33 31 / 0.14);
+  border-radius: 0.6rem;
+  box-shadow: 0 24px 60px -20px rgb(25 33 31 / 0.45);
+}
+[popover].pop:popover-open {
+  animation: rise 0.45s var(--ease);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+/* ---------- Trang chi tiết dự án: trang dọc, không engine. Chuyển động theo cuộn chỉ khi trình duyệt hỗ trợ
+   (Firefox thì mọi thứ đứng yên, hiện sẵn) và người dùng không xin giảm chuyển động. ---------- */
+.river {
+  position: relative;
+  view-timeline-name: --river;
+}
+.river::before {
+  content: "";
+  position: absolute;
+  top: 1.4rem;
+  bottom: 0.5rem;
+  left: 1.33rem;
+  width: 3px;
+  border-radius: 3px 1px 2px 1px;
+  background: linear-gradient(var(--ink), rgb(25 33 31 / 0.12));
+  transform-origin: top;
+}
+@media (min-width: 64rem) {
+  .river::before {
+    left: 1.7rem;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise-in {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 75%;
+    }
+    .river::before {
+      animation: river linear both;
+      animation-timeline: --river;
+      animation-range: cover 10% cover 75%;
+    }
+    .sun-up {
+      animation: sun-up linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 2.5rem;
+  }
+}
+@keyframes river {
+  from {
+    scale: 1 0;
+  }
+}
+/* Lúc tải đã nhô một vành trên cửa sổ (không thì chỉ thấy một mép đỏ như vết lỗi), cuộn thì mọc cao thêm. */
+@keyframes sun-up {
+  to {
+    translate: 0 -40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  /* Không có hiệu ứng hiện dần thì chữ phải nằm sẵn đó, không chờ engine gắn data-in. */
+  .reveal {
+    opacity: 1;
+    translate: none;
+  }
+  .w > span {
+    translate: none;
+    rotate: none;
+  }
+  .hl {
+    background-size: 100% 0.42em;
+  }
+  .lumen {
+    --rise: 0;
+  }
+}

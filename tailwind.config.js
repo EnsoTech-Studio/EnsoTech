@@ -1,31 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{js,jsx,ts,tsx,mdx}'],
+  content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      // Cùng chuỗi với HZ_QUERY (src/voyage/store.ts) và các @media trong voyage.css — đổi thì đổi cả ba.
+      screens: { hz: { raw: '(min-width: 64rem) and (min-height: 37.5rem)' } },
       fontFamily: {
-        sans: ['Be Vietnam Pro', 'Inter', 'system-ui', 'sans-serif'],
-        inter: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-be-vietnam)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-cormorant)', 'Georgia', 'serif'],
       },
       colors: {
-        ink: '#18211F',
-        deep: '#12312B',
-        tech: '#0F6B4B',
-        medium: '#2D5A45',
-        mint: '#EEF6F1',
-        pale: '#F7FAF7',
-        lime: '#B7E36D',
-        coral: '#EF7D5B',
-        line: '#DCE7E1',
+        paper: '#f2eadb',
+        ink: '#19211f',
+        wash: '#7e8a82',
+        cham: '#2d5e78',
+        jade: '#3F8B76',
+        son: '#B8322A',
+        gold: '#C9A14A',
       },
-      boxShadow: {
-        glass: '0 24px 70px rgba(18, 49, 43, 0.14)',
-        soft: '0 18px 50px rgba(18, 49, 43, 0.10)',
-      },
-      transitionTimingFunction: {
-        smooth: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      },
+      transitionTimingFunction: { expo: 'cubic-bezier(0.16, 1, 0.3, 1)' },
     },
   },
   plugins: [],
-};
+}

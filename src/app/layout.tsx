@@ -1,66 +1,44 @@
-import type { Metadata, Viewport } from 'next';
-import { Be_Vietnam_Pro } from 'next/font/google';
-import type { ReactNode } from 'react';
-import '../index.css';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://enso.io.vn';
-const siteDescription =
-  'Tư vấn roadmap và xây phần mềm theo yêu cầu: audit bảo mật, dashboard dữ liệu, AI/Agentic AI. Gửi quy trình để nhận hướng triển khai rõ ràng.';
+import type { Metadata, Viewport } from 'next'
+import { Be_Vietnam_Pro, Cormorant_Garamond } from 'next/font/google'
+import type { ReactNode } from 'react'
+import { SITE } from '../content/vi'
+import '../voyage/voyage.css'
 
 const beVietnam = Be_Vietnam_Pro({
   subsets: ['latin', 'vietnamese'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
   variable: '--font-be-vietnam',
-});
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin', 'vietnamese'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-cormorant',
+})
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
-    template: '%s | EnsoTech Studio',
-  },
-  description: siteDescription,
-  applicationName: 'EnsoTech Studio',
-  keywords: [
-    'EnsoTech Studio',
-    'phần mềm theo yêu cầu',
-    'thiết kế phần mềm riêng',
-    'security audit',
-    'audit hệ thống',
-    'dashboard dữ liệu',
-    'AI agent',
-    'Agentic AI',
-    'startup phần mềm Việt Nam',
-  ],
-  authors: [{ name: 'EnsoTech Studio', url: siteUrl }],
-  creator: 'EnsoTech Studio',
-  publisher: 'EnsoTech Studio',
-  alternates: {
-    canonical: '/',
-  },
+  metadataBase: new URL(SITE.url),
+  title: { default: SITE.title, template: `%s | ${SITE.name}` },
+  description: SITE.description,
+  applicationName: SITE.name,
+  keywords: SITE.keywords,
+  authors: [{ name: SITE.name, url: SITE.url }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
     url: '/',
-    siteName: 'EnsoTech Studio',
-    title: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
-    description: siteDescription,
-    images: [
-      {
-        url: '/assets/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'EnsoTech Studio - Software, Security Audit, Dashboard và AI Agent',
-      },
-    ],
+    siteName: SITE.name,
+    title: SITE.ogTitle,
+    description: SITE.ogDescription,
+    images: [{ url: '/assets/og-image.png', width: 1200, height: 630, alt: SITE.ogTitle }],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'EnsoTech Studio | Phần mềm theo yêu cầu, Security Audit & AI Agent',
-    description: siteDescription,
-    images: ['/assets/og-image.png'],
-  },
+  twitter: { card: 'summary_large_image', title: SITE.ogTitle, description: SITE.ogDescription, images: ['/assets/og-image.png'] },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },
@@ -74,28 +52,22 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-      'max-video-preview': -1,
-    },
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
   },
   category: 'technology',
-};
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#EEF6F1',
+  themeColor: '#f2eadb',
   colorScheme: 'light',
-};
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="vi" className={beVietnam.variable}>
+    <html lang="vi" className={`${beVietnam.variable} ${cormorant.variable}`}>
       <body>{children}</body>
     </html>
-  );
+  )
 }

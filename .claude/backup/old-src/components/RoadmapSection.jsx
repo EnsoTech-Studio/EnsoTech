@@ -105,7 +105,7 @@ export function RoadmapSection() {
   return (
     <motion.section
       id="process"
-      className="flex min-h-screen items-center justify-center bg-[#fcfcfc] px-8 py-16 text-[#1a4331] lg:py-14"
+      className="flex min-h-[100dvh] items-center justify-center bg-[#fcfcfc] px-8 py-16 text-[#1a4331] lg:py-14"
       initial={shouldReduceMotion ? false : { opacity: 0, y: 24, filter: 'blur(8px)' }}
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.22 }}
@@ -113,10 +113,10 @@ export function RoadmapSection() {
     >
       <main className="relative mx-auto grid w-full max-w-[1400px] grid-cols-1 items-start gap-16 lg:grid-cols-12">
         <div className="flex h-full flex-col justify-center lg:sticky lg:top-8 lg:col-span-5">
-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-tech">
+          <p className="mb-3 text-sm font-bold uppercase text-tech">
             // Roadmap
           </p>
-          <h2 className="text-3xl font-extrabold tracking-tight text-deep sm:text-5xl">
+          <h2 className="text-3xl font-extrabold text-deep sm:text-5xl">
             Bắt đầu bằng audit, không bắt đầu bằng đoán mò.
           </h2>
           <p className="mt-5 text-base leading-8 text-medium">

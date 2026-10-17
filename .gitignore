@@ -9,6 +9,8 @@ vite.config.js
 vite.config.d.ts
 desktop*.png
 mobile*.png
+.claude/qa/*/
+.claude/qa/*.txt
 .env
 .env.*
 !.env.example
