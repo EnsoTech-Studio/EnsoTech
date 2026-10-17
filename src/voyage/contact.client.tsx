@@ -10,7 +10,7 @@ type Fn = (...args: unknown[]) => void
 const ICON = [MessageCircle, Phone, MessageCircle, Mail]
 
 /** Báo "có khách" cho các công cụ đo đã bật (xem analytics.tsx). Công cụ nào chưa bật thì bỏ qua. */
-function trackLead(need: string) {
+export function trackLead(need: string) {
   const w = window as unknown as Partial<Record<'fbq' | 'gtag' | 'clarity', Fn>>
   w.fbq?.('track', 'Lead', { content_name: need })
   w.gtag?.('event', 'generate_lead', { method: 'contact_form', need })

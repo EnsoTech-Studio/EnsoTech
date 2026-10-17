@@ -1,0 +1,983 @@
+/* Thư pháp: cả trang là một bức tranh mực trên giấy dó. Chỉ có giấy, mực và son.
+   Mặc định (điện thoại, màn thấp, giảm chuyển động, máy không có WebGL, không JS): trang cuộn dọc dễ đọc.
+   Màn đủ rộng & cao: tờ tranh khổng lồ, máy quay trượt và phóng theo cuộn chuột (painting.client.tsx). */
+
+.tp {
+  --U: min(1vw, 100svh / 56);
+  --serif: var(--font-serif), "Times New Roman", serif;
+  --pad-l: max(1.5rem, (100% - 46rem) / 2);
+  /* Chừa làn bên phải cho dòng suối và con cá ở trang dọc. */
+  --pad-r: max(1.5rem, 15vw, (100% - 46rem) / 2);
+  position: relative;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.tp-brush {
+  font-family: var(--font-brush), var(--serif);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.tp-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+.tp-scroll {
+  position: relative;
+  z-index: 1;
+}
+/* Đích của link neo (tabindex=-1 do JS gắn) không cần vòng focus. */
+.tp [tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ---------- Đầu trang: con dấu tên + con dấu "Nhắn Zalo" ---------- */
+
+.tp-head {
+  position: fixed;
+  z-index: 30;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem clamp(1rem, 3vw, 2.4rem) 1.6rem;
+  background: linear-gradient(var(--paper) 45%, rgb(242 234 219 / 0));
+  pointer-events: none;
+}
+.tp-head > * {
+  pointer-events: auto;
+}
+/* Mục lục chỉ hiện ở màn rộng; điện thoại đã có con dấu Zalo là đủ. */
+.tp-nav {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .tp-nav {
+    display: flex;
+    gap: 1.8rem;
+    margin-inline: auto -1rem;
+    padding: 0.4rem 2rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    /* Lớp giấy tan viền sau cả cụm: nét vẽ đi qua khe giữa hai chữ cũng nhạt đi. */
+    background: radial-gradient(farthest-side, var(--paper) 72%, transparent);
+  }
+  /* Cùng lớp giấy sau logo: cành mai cảnh 1 còn ló vào góc trái cảnh 2 ở màn 4:3. */
+  .tp-brand {
+    padding: 0.4rem 1.6rem 0.4rem 0.4rem;
+    margin: -0.4rem -1.6rem -0.4rem -0.4rem;
+    background: radial-gradient(farthest-side, var(--paper) 72%, transparent);
+  }
+  /* Quầng giấy quanh chữ: cành cây, vách thác chạy ngang dưới menu vẫn không lẫn vào chữ. */
+  .tp-nav a {
+    padding-block: 0.3em;
+    text-shadow:
+      0 0 0.35em var(--paper),
+      0 0 0.8em var(--paper);
+    background: linear-gradient(var(--son), var(--son)) 0 100% / 0 1.5px no-repeat;
+    transition:
+      color 0.3s,
+      background-size 0.4s var(--ease);
+  }
+  .tp-nav a:hover {
+    color: var(--son);
+    background-size: 100% 1.5px;
+  }
+}
+.tp-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ink);
+}
+.tp-chop {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  color: var(--paper-hi);
+}
+
+/* ---------- Con dấu son: nút hành động ---------- */
+
+.seal {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.74em 1.35em 0.8em;
+  color: var(--paper-hi);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: center;
+  transition:
+    translate 0.35s var(--ease),
+    rotate 0.35s var(--ease);
+}
+.seal::before,
+.tp-chop::before,
+.tp-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--son);
+  border-radius: 2px 5px 3px 6px / 5px 3px 6px 2px;
+  filter: url(#tp-rough);
+  transition: background-color 0.3s;
+}
+/* Viền trong của con dấu, cũng răng cưa như mực son thấm giấy. */
+.seal::after,
+.tp-stamp::after {
+  content: "";
+  position: absolute;
+  inset: 0.32em;
+  border: 1px solid rgb(250 245 234 / 0.55);
+  border-radius: 2px;
+  filter: url(#tp-rough);
+  pointer-events: none;
+}
+.seal:hover {
+  translate: 0 -2px;
+  rotate: -0.6deg;
+}
+.seal:hover::before {
+  background-color: #9b2721;
+}
+.seal:active {
+  translate: 0 1px;
+  rotate: 0deg;
+  transition-duration: 0.08s;
+}
+.seal-sm {
+  white-space: nowrap;
+  font-size: 0.86rem;
+  padding: 0.62em 1.05em 0.66em;
+}
+
+.tp-link {
+  font-weight: 500;
+  color: var(--ink);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 0.12em;
+  transition:
+    color 0.3s,
+    background-size 0.4s var(--ease);
+}
+.tp-link:hover {
+  color: var(--son);
+  background-size: 100% 2px;
+}
+
+/* ---------- Chữ ---------- */
+
+.tp-eb {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  font-size: 0.78em;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(25 33 31 / 0.66);
+}
+/* Một chấm son nhỏ như dấu nhàn chương đầu dòng. */
+.tp-eb::before {
+  content: "";
+  flex: none;
+  width: 0.55em;
+  height: 0.7em;
+  background: var(--son);
+  border-radius: 1px 2px 1px 2px;
+  filter: url(#tp-rough);
+}
+.tp-body {
+  color: rgb(25 33 31 / 0.84);
+}
+/* Kolker Brush có chữ thường chỉ cao 0,2 cỡ chữ (Alegreya 0,46) nên tiêu đề cần cỡ lớn hơn phông thường;
+   tiêu đề nhỏ (h3) được bù nhiều nhất. */
+.tp-h1 {
+  /* svh: điện thoại xoay ngang thấp, tiêu đề không được chiếm cả màn. */
+  font-size: min(clamp(3.3rem, 12vw, 6rem), 17svh);
+  line-height: 1.12;
+  margin-block: 1.1rem 1.4rem;
+  text-wrap: balance;
+}
+.tp-h2 {
+  font-size: min(clamp(3rem, 10vw, 4.6rem), 14svh);
+  line-height: 1.12;
+  margin-top: 0.6rem;
+  text-wrap: balance;
+}
+.tp-h-fin {
+  font-size: min(clamp(3rem, 12vw, 5rem), 15svh);
+  line-height: 1.1;
+}
+
+/* Tiêu đề viết bằng bút lông: mỗi chữ hiện ra như đầu bút quét từ trái sang. */
+.tp .tp-brush .w {
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+}
+.tp .tp-brush .w > span {
+  translate: none;
+  rotate: none;
+  clip-path: inset(-0.4em 100% -0.5em -0.3em);
+  transition: clip-path 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 85ms + 120ms);
+}
+.tp [data-in] .tp-brush .w > span,
+.tp [data-in].tp-brush .w > span {
+  clip-path: inset(-0.4em -0.6em -0.5em -0.3em);
+}
+@starting-style {
+  .tp [data-in] .tp-brush .w > span {
+    clip-path: inset(-0.4em 100% -0.5em -0.3em);
+  }
+}
+
+.tp-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem 1.8rem;
+  margin-top: 2rem;
+}
+.tp-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 2rem;
+  font-size: 0.92em;
+  color: rgb(25 33 31 / 0.72);
+}
+.tp-trust li,
+.tp-contact li {
+  display: flex;
+  gap: 0.6em;
+}
+.tp-trust li::before {
+  content: "";
+  flex: none;
+  width: 0.4em;
+  height: 0.4em;
+  margin-top: 0.62em;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.55;
+}
+
+.tp-items {
+  display: grid;
+  gap: 1.6rem;
+  margin-top: 2.6rem;
+  counter-reset: kho;
+}
+.tp-item {
+  counter-increment: kho;
+  display: flex;
+  gap: 0.9rem;
+  font-size: 1.06em;
+  line-height: 1.5;
+}
+/* Số thứ tự viết tay màu son: thứ tự sẵn có của danh sách, không thêm chữ. */
+.tp-item::before {
+  content: counter(kho);
+  flex: none;
+  min-width: 1.1em;
+  font-family: var(--font-brush), var(--serif);
+  font-size: 2.1em;
+  line-height: 0.8;
+  color: var(--son);
+}
+.tp-close {
+  margin-top: 3rem;
+  font-size: 1.08em;
+}
+.tp-close > * + * {
+  margin-top: 1rem;
+}
+.tp-fin-text > * + * {
+  margin-top: 1.2rem;
+}
+.tp-contact {
+  display: grid;
+  gap: 0.45rem;
+}
+.tp-legal {
+  font-size: 0.85em;
+  color: rgb(25 33 31 / 0.62);
+}
+
+/* ---------- Các chương giữa tranh (chapters.tsx) ---------- */
+
+.tp-blk ~ .tp-blk {
+  margin-top: 2.6rem;
+}
+.tp-blk > * + * {
+  margin-top: 0.8em;
+}
+.tp-blk > .tp-h2 {
+  margin-top: 0.2em;
+}
+.tp-h3 {
+  font-size: 2.8em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.tp-blk > .tp-h3 {
+  margin-top: 0.4em;
+}
+
+/* Con dấu son nhỏ cuối dòng đầu chương: đóng xuống khi chương hiện ra. */
+.tp-mark {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.3em;
+  aspect-ratio: 1;
+  margin-left: 0.2em;
+  color: var(--paper-hi);
+  opacity: 0;
+  scale: 1.8;
+  rotate: -12deg;
+  transition:
+    opacity 0.2s ease-out 0.9s,
+    scale 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) 0.9s,
+    rotate 0.5s var(--ease) 0.9s;
+}
+.tp-mark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--son);
+  border-radius: 2px 4px 3px 5px / 4px 3px 5px 2px;
+  filter: url(#tp-rough);
+}
+[data-in] .tp-mark {
+  opacity: 1;
+  scale: 1;
+  rotate: 4deg;
+}
+
+.tp-dots,
+.tp-why {
+  display: grid;
+  gap: 0.35em;
+}
+.tp-why {
+  gap: 0.8em;
+}
+/* Nội dung dòng có cả chữ thường lẫn dấu soát (Rich) nên không dùng flex: dấu đầu dòng đặt tuyệt đối. */
+.tp-dots li,
+.tp-why li {
+  position: relative;
+  padding-left: 1.4em;
+}
+/* Gạch son như một nét bút ngắn. */
+.tp-dots li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 0.75em;
+  height: 2px;
+  background: var(--son);
+  border-radius: 2px;
+}
+.tp-why li::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.5em;
+  width: 0.5em;
+  height: 0.62em;
+  background: var(--son);
+  border-radius: 1px 2px 1px 2px;
+  filter: url(#tp-rough);
+}
+.tp-fit {
+  font-size: 0.9em;
+  color: rgb(25 33 31 / 0.76);
+}
+.tp-fit b,
+.tp-ba b {
+  color: var(--ink);
+}
+
+.tp-facts > * + * {
+  margin-top: 0;
+}
+.tp-facts > div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: 1em;
+  padding-block: 0.5em;
+  border-top: 1px solid rgb(25 33 31 / 0.18);
+}
+.tp-facts > div:last-child {
+  border-bottom: 1px solid rgb(25 33 31 / 0.18);
+}
+.tp-facts dt {
+  padding-top: 0.25em;
+  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(25 33 31 / 0.6);
+}
+
+.tp-did {
+  columns: 2 15em;
+  column-gap: 2.2em;
+  counter-reset: did;
+}
+.tp-did li {
+  counter-increment: did;
+  display: flex;
+  gap: 0.6em;
+  margin-bottom: 0.9em;
+  break-inside: avoid;
+}
+.tp-did li::before,
+.tp-step > .tp-h3::before {
+  content: counter(did);
+  flex: none;
+  min-width: 0.9em;
+  font-family: var(--font-brush), var(--serif);
+  font-size: 1.9em;
+  line-height: 0.85;
+  color: var(--son);
+}
+.tp-sub {
+  display: grid;
+  gap: 0.15em;
+  margin-top: 0.35em;
+  font-size: 0.92em;
+  color: rgb(25 33 31 / 0.8);
+}
+.tp-sub > span::before {
+  content: "– ";
+  color: var(--son);
+}
+
+.tp-quote blockquote {
+  font-size: 1.28em;
+  font-style: italic;
+  line-height: 1.4;
+}
+.tp-quote figcaption {
+  margin-top: 0.3em;
+  font-size: 0.84em;
+  color: rgb(25 33 31 / 0.66);
+}
+.tp-bridge {
+  padding-left: 1em;
+  border-left: 3px solid var(--son);
+  font-size: 1.06em;
+}
+
+.tp-tag {
+  display: inline-block;
+  padding: 0.1em 0.75em 0.16em;
+  border: 1px dashed rgb(25 33 31 / 0.5);
+  border-radius: 999px;
+  font-size: 0.72em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(25 33 31 / 0.7);
+}
+.tp-ba:last-of-type b {
+  color: var(--son);
+}
+/* Nét rối tự gỡ thành đường thẳng khi chương hiện ra. */
+.tp-untangle {
+  display: block;
+  width: 7.5em;
+  height: auto;
+  color: rgb(25 33 31 / 0.72);
+}
+.tp-untangle path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.5s var(--ease) 0.6s;
+}
+.tp-untangle path + path {
+  transition-delay: 1.9s;
+  transition-duration: 0.4s;
+}
+[data-in] .tp-untangle path {
+  stroke-dashoffset: 0;
+}
+
+.tp-steps {
+  counter-reset: did;
+}
+.tp-step {
+  counter-increment: did;
+}
+.tp-step > .tp-h3::before {
+  display: inline-block;
+  margin-right: 0.3em;
+  font-size: 1.15em;
+}
+.tp-meta {
+  font-size: 0.84em;
+  font-weight: 500;
+  color: var(--son);
+}
+
+.tp-aside {
+  font-style: italic;
+  color: rgb(25 33 31 / 0.8);
+}
+
+.tp-faq > * + * {
+  margin-top: 0;
+}
+.tp-faq ~ .tp-faq {
+  margin-top: 0;
+}
+.tp-qa {
+  border-top: 1px solid rgb(25 33 31 / 0.2);
+}
+.tp-faq:last-of-type .tp-qa:last-child {
+  border-bottom: 1px solid rgb(25 33 31 / 0.2);
+}
+.tp-qa summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1em;
+  padding-block: 0.7em;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.tp-qa summary:hover,
+.tp-qa[open] summary {
+  color: var(--son);
+}
+.tp-qa .plus {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5em;
+  aspect-ratio: 1;
+  margin-top: 0.05em;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  line-height: 1;
+}
+.tp-ans {
+  padding-bottom: 0.9em;
+  color: rgb(25 33 31 / 0.84);
+}
+.tp-ans > * + * {
+  margin-top: 0.5em;
+}
+
+.tp-ch {
+  display: grid;
+  gap: 1em;
+}
+.tp-ch > * + * {
+  margin-top: 0;
+}
+.tp-ch a {
+  display: grid;
+  gap: 0.1em;
+}
+.tp-ch small {
+  font-size: 0.8em;
+  color: rgb(25 33 31 / 0.64);
+}
+.tp-ch strong {
+  font-size: 1.12em;
+  font-weight: 700;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
+  justify-self: start;
+  transition:
+    color 0.3s,
+    background-size 0.4s var(--ease);
+}
+.tp-ch a:hover strong {
+  color: var(--son);
+  background-size: 100% 1.5px;
+}
+
+/* ---------- Form liên hệ: ô nhập là một nét mực gạch chân ---------- */
+
+.tp-form {
+  display: grid;
+  gap: 1.1em;
+}
+.tp-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+  gap: 1.1em 1.4em;
+}
+.tp-field {
+  display: grid;
+  gap: 0.25em;
+  min-width: 0;
+}
+.tp-field > span,
+.tp-field > legend {
+  font-size: 0.8em;
+  font-weight: 500;
+  color: rgb(25 33 31 / 0.72);
+}
+.tp-field > legend {
+  margin-bottom: 0.5em;
+}
+.tp-input {
+  display: block;
+  width: 100%;
+  padding: 0.3em 0 0.4em;
+  background: transparent;
+  border-bottom: 1.5px solid rgb(25 33 31 / 0.38);
+  border-radius: 0;
+  color: var(--ink);
+  resize: none;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.tp-input::placeholder {
+  color: rgb(25 33 31 / 0.4);
+}
+.tp-input:focus {
+  outline: none;
+  border-bottom-color: var(--ink);
+  box-shadow: 0 1.5px 0 var(--ink);
+}
+.tp-input[aria-invalid="true"] {
+  border-bottom-color: var(--son);
+  box-shadow: 0 1.5px 0 var(--son);
+}
+.tp-err {
+  font-size: 0.82em;
+  font-weight: 500;
+  color: var(--son);
+}
+.tp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+.tp-chip {
+  padding: 0.3em 0.9em 0.36em;
+  border: 1px solid rgb(25 33 31 / 0.35);
+  border-radius: 999px;
+  font-size: 0.86em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+}
+.tp-chip:hover {
+  border-color: var(--ink);
+}
+.tp-chip:has(:checked) {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper-hi);
+}
+.tp-chip:has(:focus-visible) {
+  outline: 2px solid var(--son);
+  outline-offset: 2px;
+}
+button.seal:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.tp-note {
+  font-size: 0.8em;
+  color: rgb(25 33 31 / 0.62);
+}
+
+/* ---------- Điểm neo nét vẽ (vô hình, chỉ để engine đo) ---------- */
+
+.a {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+}
+.a[data-v] {
+  display: block;
+  left: var(--vx);
+  top: var(--vy);
+  width: var(--vw, 0);
+  height: var(--vh, 0);
+}
+
+/* Con dấu đóng sau khi vòng Ensō khép lại. */
+.tp-stamp {
+  position: absolute;
+  isolation: isolate;
+  display: none;
+  place-items: center;
+  aspect-ratio: 1;
+  color: var(--paper-hi);
+  opacity: 0;
+  scale: 1.5;
+  rotate: -8deg;
+  transition:
+    opacity 0.25s ease-out,
+    scale 0.45s cubic-bezier(0.3, 1.6, 0.5, 1),
+    rotate 0.45s var(--ease);
+}
+.tp[data-stamp] .tp-stamp {
+  opacity: 1;
+  scale: 1;
+  rotate: 3deg;
+}
+.tp-flat-enso {
+  display: none;
+  width: 9rem;
+  margin: 0 0 2rem;
+  color: var(--ink);
+}
+
+/* ---------- Trang dọc ---------- */
+
+.tp-sec {
+  position: relative;
+  padding: clamp(5.5rem, 13vh, 8.5rem) var(--pad-r) 4rem var(--pad-l);
+}
+.tp-hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tp-hero .tp-body {
+  max-width: 36rem;
+}
+.tp-falls {
+  position: relative;
+  height: 420svh;
+}
+.tp-fstage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  /* Khung vòng Ensō: màn đứng thì nằm dưới bụng rồng, màn ngang dẹt thì ở cột trái cạnh đuôi rồng. */
+  --ex: 4vw;
+  --ey: 75svh;
+  --ew: 34vw;
+  --eh: 22svh;
+}
+@media (min-aspect-ratio: 2/1) {
+  .tp-fstage {
+    --ex: 2vw;
+    --ey: 28svh;
+    --ew: 18vw;
+    --eh: 62svh;
+  }
+}
+.a.tp-enso-v {
+  left: var(--ex);
+  top: var(--ey);
+  width: var(--ew);
+  height: var(--eh);
+}
+/* Dấu theo đường kính vòng d như trên tranh: tâm vòng ở (giữa khung, đỉnh + d/2), dấu lệch phải 0.55d, xuống 0.18d, rộng 0.19d. */
+.tp-falls .tp-stamp-v {
+  --d: min(var(--ew), var(--eh));
+  display: grid;
+  left: calc(var(--ex) + var(--ew) / 2 + 0.554 * var(--d));
+  top: calc(var(--ey) + 0.68 * var(--d));
+  width: calc(0.193 * var(--d));
+}
+.tp-fin {
+  padding-bottom: 6rem;
+}
+
+/* Không có WebGL / không JS: không có tranh động, bỏ màn thác, hiện vòng Ensō vẽ sẵn. */
+.tp[data-flat] .tp-falls {
+  display: none;
+}
+.tp[data-flat] .tp-flat-enso {
+  display: block;
+}
+@media (scripting: none) {
+  .tp-falls {
+    display: none;
+  }
+  .tp-flat-enso {
+    display: block;
+  }
+  .tp .tp-brush .w > span {
+    clip-path: none;
+  }
+  .tp-mark {
+    opacity: 1;
+    scale: 1;
+    rotate: 4deg;
+  }
+  .tp-untangle path {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tp .tp-brush .w > span {
+    clip-path: none;
+  }
+  .tp-mark {
+    opacity: 1;
+    scale: 1;
+    rotate: 4deg;
+    transition: none;
+  }
+  .tp-untangle path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  /* Dấu vẫn đóng theo data-stamp (sau vòng Ensō), chỉ bỏ hiệu ứng nảy. */
+  .tp-stamp {
+    transition: none;
+  }
+}
+
+/* Màn rộng mà vẫn đọc dọc (giảm chuyển động / không WebGL): trả lại thanh cuộn mà voyage.css đã ẩn. */
+@media (min-width: 64rem) and (min-height: 37.5rem) {
+  html:has(.tp[data-flat]) {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(25 33 31 / 0.35) transparent;
+  }
+}
+@media (min-width: 64rem) and (min-height: 37.5rem) and (prefers-reduced-motion: reduce) {
+  html:has(.tp) {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(25 33 31 / 0.35) transparent;
+  }
+}
+
+/* ---------- Bức tranh lớn ----------
+   Phải khớp PAINT_Q trong layout.ts. Mọi vị trí tính bằng U (--x --y --w --h trên phần tử).
+   Chiều cao cuộn = (TOTAL + 1) màn hình; JS ghi đè bằng px, số ở đây chỉ để khỏi giật lúc tải. */
+@media (min-width: 64rem) and (min-height: 37.5rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .tp:not([data-flat]) .tp-head {
+    background: none;
+  }
+  .tp:not([data-flat]) .tp-scroll {
+    height: calc(32.85 * 100svh);
+  }
+  .tp:not([data-flat]) .tp-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: clip;
+  }
+  .tp:not([data-flat]) .tp-world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(1540 * var(--U));
+    height: calc(140 * var(--U));
+    transform-origin: 0 0;
+    transform: translate3d(calc(50vw - 50 * var(--U)), calc(50svh - 30 * var(--U)), 0);
+    font-size: calc(1.32 * var(--U));
+  }
+  .tp:not([data-flat]) :is(.tp-sec, .tp-falls, .tp-fstage) {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    /* Các chương phủ chồng cả tờ tranh: chỉ khối chữ nhận chuột, không thì chương sau che nút của chương trước. */
+    pointer-events: none;
+  }
+  .tp:not([data-flat]) .p {
+    pointer-events: auto;
+    position: absolute;
+    left: calc(var(--x) * var(--U));
+    top: calc(var(--y) * var(--U));
+    width: calc(var(--w) * var(--U));
+    margin: 0;
+  }
+  .tp:not([data-flat]) .a[data-v] {
+    display: none;
+  }
+  .tp:not([data-flat]) .a[data-p] {
+    display: block;
+    left: calc(var(--x) * var(--U));
+    top: calc(var(--y) * var(--U));
+    width: calc(var(--w, 0) * var(--U));
+    height: calc(var(--h, 0) * var(--U));
+  }
+
+  .tp:not([data-flat]) .tp-h1 {
+    font-size: 4.8em;
+    line-height: 1.16;
+  }
+  .tp:not([data-flat]) .tp-h2 {
+    font-size: 4em;
+    line-height: 1.14;
+  }
+  .tp:not([data-flat]) .tp-hero .tp-body {
+    max-width: none;
+  }
+  .tp:not([data-flat]) .tp-ctas {
+    gap: 1em 1.6em;
+    font-size: 0.96em;
+  }
+  .tp:not([data-flat]) .tp-trust {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3em 2em;
+    font-size: 0.8em;
+  }
+  .tp:not([data-flat]) .tp-items {
+    margin: 0;
+  }
+  .tp:not([data-flat]) .tp-close {
+    font-size: 1.08em;
+  }
+  .tp:not([data-flat]) .tp-h3 {
+    font-size: 2.5em;
+  }
+  /* Vòng Ensō lớn ôm tiêu đề chương "Vì sao". */
+  .tp:not([data-flat]) .tp-ring {
+    text-align: center;
+  }
+  .tp:not([data-flat]) .tp-ring .tp-eb {
+    justify-content: center;
+  }
+  .tp:not([data-flat]) .tp-faq {
+    font-size: 0.92em;
+  }
+  .tp:not([data-flat]) .tp-qa:last-child {
+    border-bottom: 1px solid rgb(25 33 31 / 0.2);
+  }
+
+  /* Màn cuối nhìn ở độ phóng 0.5 nên chữ gấp đôi để ra đúng cỡ trên màn hình. */
+  .tp:not([data-flat]) .tp-fin {
+    font-size: 2em;
+  }
+  .tp:not([data-flat]) .tp-h-fin {
+    font-size: 2.9em;
+  }
+  .tp:not([data-flat]) .tp-fin .tp-stamp {
+    display: grid;
+  }
+  .tp:not([data-flat]) .tp-stamp-v {
+    display: none;
+  }
+}
