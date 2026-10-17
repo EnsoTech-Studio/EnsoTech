@@ -31,10 +31,20 @@ export const metadata: Metadata = {
 /** Ảnh chụp trang thật cho từng việc trong PROJECT.done, cùng thứ tự. */
 const DONE_SHOTS = [docTo, nhatKy, loiKhuyen, hanhTrinh, camNang]
 const WIDE = '(min-width: 64rem) 55vw, 100vw'
+const HOST = new URL(PROJECT.liveUrl).host
 
+/** Ảnh máy tính nằm trong cửa sổ kiểu Mac (ba chấm, thanh địa chỉ); ảnh điện thoại trong khung điện thoại. */
 function Shot({ src, alt, phone, preload, className = '' }: { src: StaticImageData; alt: string; phone?: boolean; preload?: boolean; className?: string }) {
   return (
     <div className={`${phone ? 'tpd-phone' : 'tpd-shot'} ${className}`}>
+      {!phone && (
+        <div className="tpd-bar" aria-hidden>
+          <i />
+          <i />
+          <i />
+          <span>{HOST}</span>
+        </div>
+      )}
       <Image src={src} alt={alt} placeholder="blur" preload={preload} sizes={phone ? '(min-width: 64rem) 17rem, 70vw' : WIDE} />
     </div>
   )

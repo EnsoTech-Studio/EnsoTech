@@ -303,7 +303,7 @@ export const FAQ = {
   items: [
     {
       q: 'Làm một phần mềm như vậy tốn bao nhiêu?',
-      a: 'Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.',
+      a: 'Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Giá cụ thể từng dự án khác nhau, cần trao đổi chi tiết. Bạn nhận báo giá sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.',
     },
     {
       q: 'Bao lâu thì dùng được?',

@@ -251,7 +251,7 @@ Ensō là vòng tròn vẽ bằng một nét trong thiền Nhật Bản, tượn
 ## Những câu khách hay hỏi
 
 **Làm một phần mềm như vậy tốn bao nhiêu?**
-Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.
+Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Giá cụ thể từng dự án khác nhau, cần trao đổi chi tiết. Bạn nhận báo giá sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.
 
 **Bao lâu thì dùng được?**
 Phần quan trọng nhất thường dùng thử được sau 2–4 tuần. Phần còn lại làm dần theo thứ tự bạn cần.

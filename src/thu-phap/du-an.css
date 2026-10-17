@@ -8,21 +8,57 @@
   text-wrap: balance;
 }
 
-/* Ảnh máy tính: lề giấy bồi sáng, viền mực mảnh, bóng đổ nhẹ như tranh treo tách khỏi tường, dấu son ở góc. */
+/* Ảnh máy tính: cửa sổ trình duyệt kiểu Mac (bo góc, ba chấm đỏ-vàng-xanh, thanh địa chỉ), bóng đổ như treo trên giấy, dấu son ở góc.
+   Không overflow:clip vì dấu son thò ra ngoài mép; ảnh tự bo hai góc dưới. */
 .tpd-shot {
+  --r: clamp(0.5rem, 1vw, 0.75rem);
   position: relative;
-  padding: clamp(0.35rem, 0.9vw, 0.75rem);
+  border-radius: var(--r);
   background: var(--paper-hi);
-  border: 1px solid rgb(25 33 31 / 0.16);
   box-shadow:
+    0 0 0 1px rgb(25 33 31 / 0.14),
     0 1px 2px rgb(25 33 31 / 0.08),
     0 30px 60px -30px rgb(25 33 31 / 0.5);
+}
+.tpd-bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.3rem, 0.6vw, 0.45rem);
+  height: clamp(1.5rem, 2.6vw, 2.2rem);
+  padding-inline: clamp(0.6rem, 1.1vw, 0.9rem);
+  border-bottom: 1px solid rgb(25 33 31 / 0.1);
+  border-radius: var(--r) var(--r) 0 0;
+  background: linear-gradient(#f4f1ec, #e9e5de);
+}
+.tpd-bar i {
+  width: clamp(0.5rem, 0.9vw, 0.72rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.15);
+}
+.tpd-bar i:nth-child(2) {
+  background: #febc2e;
+}
+.tpd-bar i:nth-child(3) {
+  background: #28c840;
+}
+/* Thanh địa chỉ giữa cửa sổ; lùi trái bằng bề rộng ba chấm để nằm đúng giữa. */
+.tpd-bar span {
+  margin-inline: auto;
+  translate: calc(-1 * clamp(1rem, 1.8vw, 1.5rem));
+  padding: 0.1em 2.6em;
+  border-radius: 0.4em;
+  background: rgb(25 33 31 / 0.06);
+  font: 500 clamp(0.6rem, 0.85vw, 0.75rem) / 1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  color: rgb(25 33 31 / 0.55);
+  white-space: nowrap;
 }
 .tpd-shot img {
   display: block;
   width: 100%;
   height: auto;
-  outline: 1px solid rgb(25 33 31 / 0.1);
+  border-radius: 0 0 var(--r) var(--r);
 }
 .tpd-shot::after {
   content: "";
