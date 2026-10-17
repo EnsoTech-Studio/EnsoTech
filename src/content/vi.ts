@@ -61,7 +61,7 @@ export const HERO = {
   sub: 'Bán hàng, kho, lịch hẹn, khách hàng, báo cáo — gom về một chỗ, chạy đúng theo cách bạn đang làm. Dùng trên máy tính và điện thoại; nhân viên lớn tuổi cũng dùng được.',
   primary: 'Nhắn Zalo tư vấn',
   secondary: 'Xem dự án đã làm ↓',
-  trust: ['Tư vấn miễn phí [cần xác nhận]', 'Báo giá rõ trước khi làm', 'Bạn sở hữu phần mềm và dữ liệu [cần xác nhận]'],
+  trust: ['Tư vấn miễn phí', 'Báo giá rõ trước khi làm', 'Bạn sở hữu phần mềm và dữ liệu'],
 }
 
 export const PAIN = {
@@ -140,7 +140,7 @@ export const SERVICES = {
         'Website có lỗ hổng phổ biến nào không?',
       ],
       fit: 'bạn đang giữ thông tin khách (số điện thoại, địa chỉ, hồ sơ sức khỏe), hoặc từng bị mất fanpage hay mất dữ liệu.',
-      result: 'một bản báo cáo ngắn, xếp theo việc nào cần vá trước [cần xác nhận].',
+      result: 'một bản báo cáo ngắn, xếp theo việc nào cần vá trước.',
     },
   ] satisfies Service[],
 }
@@ -153,16 +153,16 @@ export const PROJECT = {
   title: 'Một trang web mà người bệnh lớn tuổi cũng tự dùng được',
   lead: 'Cổng thông tin và nhật ký sức khỏe cho người bệnh điều trị ung thư gan bằng phương pháp TACE.',
   facts: [
-    ['Khách hàng', 'Khoa Ngoại Gan – Mật – Tụy, Bệnh viện Đại học Y Dược TP.HCM [cần xác nhận được phép nêu tên và dùng logo]'],
+    ['Khách hàng', 'Khoa Ngoại Gan – Mật – Tụy, Bệnh viện Đại học Y Dược TP.HCM'],
     ['Lĩnh vực', 'Y tế'],
     ['Dùng trên', 'Máy tính và điện thoại'],
-    ['Thời gian làm', '[cần xác nhận]'],
+    ['Thời gian làm', '3 tháng'],
     ['Xem trang thật', 'tuchamsocgan.vn'],
   ] as [string, string][],
   liveUrl: 'https://tuchamsocgan.vn',
   problemTitle: 'Bài toán',
   problem:
-    'Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, họ và người nhà có rất nhiều câu hỏi: trước thủ thuật phải nhịn ăn bao lâu, sau TACE bị sốt có sao không, khi nào phải quay lại viện. Thông tin phải rõ ràng, đáng tin, và đọc được — kể cả với người mắt kém, không quen dùng điện thoại. [cần xác nhận: mô tả đúng bài toán khoa đưa ra]',
+    'Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, họ và người nhà có rất nhiều câu hỏi: trước thủ thuật phải nhịn ăn bao lâu, sau TACE bị sốt có sao không, khi nào phải quay lại viện. Thông tin phải rõ ràng, đáng tin, và đọc được — kể cả với người mắt kém, không quen dùng điện thoại.',
   doneTitle: 'Chúng tôi đã làm',
   done: [
     { title: 'Nút "Đọc to" ở mọi phần.', text: 'Người mắt mỏi, khó đọc chữ nhỏ chỉ cần bấm để nghe.' },
@@ -193,13 +193,24 @@ export const PROJECT = {
     { text: 'Tôi thấy được quan tâm, giảm lo lắng hơn.', by: 'Người bệnh điều trị TACE, chia sẻ trên tuchamsocgan.vn' },
     { text: 'Trang web giúp tôi tham khảo thông tin dễ dàng, để chuẩn bị tốt.', by: 'Người bệnh điều trị TACE, chia sẻ trên tuchamsocgan.vn' },
   ],
-  quotesMark: '[cần xác nhận]',
   numbersLabel: 'Con số:',
-  numbers: '[cần số thật — VD: số tài khoản người bệnh, số lượt ghi nhật ký, số lượt nghe đọc to]',
+  numbers: 'hơn 100 người dùng',
   bridge:
     'Điều này liên quan gì đến cửa hàng của bạn? Nếu người bệnh lớn tuổi tự dùng được, nhân viên của bạn cũng dùng được — không cần học lâu.',
   live: 'Xem trang thật ↗',
   similar: 'Tôi muốn làm một cái tương tự',
+  /** Mô tả ảnh chụp trang thật cho trình đọc màn hình. `done` theo đúng thứ tự `done` ở trên. */
+  shots: {
+    home: 'Ảnh chụp tuchamsocgan.vn trên máy tính: thanh menu, lời nhắc nút đọc to và các chuyên mục cẩm nang.',
+    phone: 'Ảnh chụp tuchamsocgan.vn trên điện thoại: nhật ký "Sức khỏe hôm nay" với các triệu chứng chọn nhanh.',
+    done: [
+      'Ảnh chụp trên điện thoại: hành trình điều trị TACE, có nút loa để nghe đọc to.',
+      'Ảnh chụp nhật ký sức khỏe: chọn triệu chứng bằng biểu tượng và chấm mức đau bằng gương mặt từ 0 đến 10.',
+      'Ảnh chụp phần lời khuyên nhanh khi có triệu chứng.',
+      'Ảnh chụp hành trình điều trị TACE 4 bước, từ hội chẩn đến xuất viện.',
+      'Ảnh chụp các chuyên mục cẩm nang chăm sóc.',
+    ],
+  },
 }
 
 export const SCENARIOS = {
@@ -233,23 +244,23 @@ export const PROCESS = {
   steps: [
     {
       title: 'Trò chuyện',
-      meta: '30 phút, miễn phí [cần xác nhận]',
+      meta: '30 phút, miễn phí',
       text: 'Bạn kể cách đang làm, chúng tôi hỏi kỹ — qua Zalo, điện thoại hoặc gặp trực tiếp. Bạn sẽ biết có nên làm hay không, kể cả khi câu trả lời là "phần mềm có sẵn là đủ".',
     },
     {
       title: 'Đề xuất & báo giá',
-      meta: 'trong 3–5 ngày [cần xác nhận]',
+      meta: 'trong 1–3 ngày',
       text: 'Làm những gì, bao lâu, bao nhiêu tiền — ghi rõ trên giấy. Chưa đồng ý thì chưa mất gì.',
     },
     {
       title: 'Làm thử phần quan trọng nhất',
-      meta: '2–4 tuần [cần xác nhận]',
-      text: 'Bạn dùng thử với công việc thật trước khi làm hết. Chưa hợp thì chỉnh, và bạn chưa phải trả cho cả hệ thống [cần xác nhận].',
+      meta: '2–4 tuần',
+      text: 'Bạn dùng thử với công việc thật trước khi làm hết. Chưa hợp thì chỉnh, và bạn chưa phải trả cho cả hệ thống.',
     },
     {
       title: 'Bàn giao & đồng hành',
       meta: '',
-      text: 'Hướng dẫn tận tay cho bạn và nhân viên. Sửa lỗi miễn phí trong [X tháng] [cần xác nhận]. Hỗ trợ qua Zalo khi cần.',
+      text: 'Hướng dẫn tận tay cho bạn và nhân viên. Sửa lỗi miễn phí trong 3 tháng. Hỗ trợ qua Zalo khi cần.',
     },
   ],
   cta: 'Bắt đầu bằng một cuộc trò chuyện →',
@@ -273,7 +284,7 @@ export const WHY = {
     },
     {
       title: 'Bạn là chủ phần mềm và dữ liệu.',
-      text: 'Muốn xuất dữ liệu ra Excel lúc nào cũng được [cần xác nhận: có bàn giao mã nguồn không].',
+      text: 'Muốn xuất dữ liệu ra Excel lúc nào cũng được. Bàn giao mã nguồn nếu bạn muốn.',
     },
     {
       title: 'Nói thật khi không cần làm riêng.',
@@ -281,7 +292,7 @@ export const WHY = {
     },
   ],
   enso: 'Ensō là vòng tròn vẽ bằng một nét trong thiền Nhật Bản, tượng trưng cho sự trọn vẹn và đơn giản. Đó cũng là cách chúng tôi muốn phần mềm của bạn: khép kín, gọn gàng, không thừa.',
-  team: 'Đội ngũ [cần cung cấp]',
+  team: 'Đội ngũ kỹ sư chuyên nghiệp',
 }
 
 export type Faq = { q: string; a?: string; list?: string[] }
@@ -292,11 +303,11 @@ export const FAQ = {
   items: [
     {
       q: 'Làm một phần mềm như vậy tốn bao nhiêu?',
-      a: 'Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ [X] triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ [Y] triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì. [cần số thật]',
+      a: 'Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.',
     },
     {
       q: 'Bao lâu thì dùng được?',
-      a: 'Phần quan trọng nhất thường dùng thử được sau 2–4 tuần [cần xác nhận]. Phần còn lại làm dần theo thứ tự bạn cần.',
+      a: 'Phần quan trọng nhất thường dùng thử được sau 2–4 tuần. Phần còn lại làm dần theo thứ tự bạn cần.',
     },
     {
       q: 'Sao không dùng KiotViet, Sapo cho rẻ?',
@@ -314,15 +325,15 @@ export const FAQ = {
     {
       q: 'Dữ liệu của tôi để ở đâu, có an toàn không?',
       list: [
-        'Lưu trên máy chủ [cần xác nhận: đặt ở Việt Nam hay dịch vụ đám mây].',
-        'Sao lưu hằng ngày [cần xác nhận].',
+        'Lưu trên máy chủ ở Việt Nam hoặc dịch vụ đám mây, tùy yêu cầu của bạn.',
+        'Sao lưu định kỳ theo yêu cầu của bạn.',
         'Chỉ người bạn cho phép mới xem được.',
         'Dữ liệu là của bạn.',
       ],
     },
     {
       q: 'Làm xong rồi, hỏng thì sao?',
-      a: 'Sửa lỗi miễn phí trong [X tháng] [cần xác nhận]. Sau đó có gói bảo trì hằng tháng [cần xác nhận giá], hoặc gọi khi cần.',
+      a: 'Sửa lỗi miễn phí trong 3 tháng. Sau đó có gói bảo trì hằng tháng, giá do hai bên trao đổi, hoặc gọi khi cần.',
     },
     {
       q: 'Sau này muốn thêm tính năng thì sao?',
@@ -330,11 +341,11 @@ export const FAQ = {
     },
     {
       q: 'Có phải trả hết tiền một lần không?',
-      a: 'Không. Thanh toán theo từng giai đoạn [cần xác nhận tỉ lệ, VD 30% – 40% – 30%].',
+      a: 'Không. Thanh toán theo từng giai đoạn, thông thường 30% – 40% – 30%.',
     },
     {
       q: 'Tôi ở tỉnh khác, có làm được không?',
-      a: 'Được. Phần lớn công việc trao đổi qua Zalo và gọi video. Khi cần, chúng tôi gặp trực tiếp [cần xác nhận khu vực].',
+      a: 'Được. Phần lớn công việc trao đổi qua Zalo và gọi video. Khi cần, chúng tôi gặp trực tiếp tại TP.HCM.',
     },
   ] satisfies Faq[],
 }
@@ -344,8 +355,8 @@ export const CONTACT_SECTION = {
   title: 'Kể cho chúng tôi nghe bạn đang vướng ở đâu.',
   lead: 'Không cần chuẩn bị gì. Một tin nhắn Zalo là đủ — chúng tôi sẽ hỏi phần còn lại.',
   channels: [
-    { label: 'Zalo (nhanh nhất)', value: 'Nhắn Zalo 0364 151 304', href: CONTACT.zaloHref, note: '[cần xác nhận, hay dùng Zalo OA?]' },
-    { label: 'Gọi điện', value: '0364 151 304', href: CONTACT.phoneHref, note: 'Giờ làm việc [cần xác nhận]' },
+    { label: 'Zalo (nhanh nhất)', value: 'Nhắn Zalo 0364 151 304', href: CONTACT.zaloHref },
+    { label: 'Gọi điện', value: '0364 151 304', href: CONTACT.phoneHref, note: 'Giờ làm việc 9h – 18h, thứ 2 – thứ 6' },
     { label: 'Messenger', value: 'Nhắn qua Facebook', href: CONTACT.messengerHref },
     { label: 'Email', value: 'ensotechstudio@gmail.com', href: CONTACT.emailHref },
   ],
@@ -365,7 +376,7 @@ export const FORM = {
     'Chưa rõ, muốn được tư vấn',
   ],
   submit: 'Gửi — chúng tôi gọi lại',
-  note: 'Chúng tôi gọi hoặc nhắn Zalo lại trong 1 ngày làm việc [cần xác nhận]. Số của bạn chỉ dùng để tư vấn, không chia sẻ cho ai.',
+  note: 'Chúng tôi gọi hoặc nhắn Zalo lại trong 1 ngày làm việc. Số của bạn chỉ dùng để tư vấn, không chia sẻ cho ai.',
   errors: {
     name: 'Bạn cho chúng tôi biết tên để tiện xưng hô nhé.',
     phone: 'Số điện thoại chưa đúng, bạn kiểm tra lại giúp nhé.',
@@ -402,7 +413,7 @@ export const FOOTER = {
   ],
   linksTitle: 'Liên kết',
   legal: '© 2026 EnsoTech Studio',
-  legalNote: '[Mã số thuế, địa chỉ — cần xác nhận nếu có]',
+  legalNote: 'TP.HCM',
   privacyTitle: 'Bảo mật thông tin',
   privacy: 'Thông tin bạn gửi chỉ dùng để tư vấn. Chúng tôi không bán hay chia sẻ cho bên thứ ba.',
 }

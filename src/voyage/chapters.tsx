@@ -208,9 +208,6 @@ export function Project() {
             <figcaption className="mt-2 text-[0.82rem] text-wash">— {q.by}</figcaption>
           </figure>
         ))}
-        <p className="reveal mt-3" style={idx(3)}>
-          <Rich text={PROJECT.quotesMark} />
-        </p>
         <p className="reveal mt-8 border-l-2 border-son pl-4 text-[0.98rem] leading-relaxed [@media(max-height:46rem)]:mt-5" style={idx(4)}>
           {PROJECT.bridge}
         </p>

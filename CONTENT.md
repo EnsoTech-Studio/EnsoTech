@@ -44,7 +44,7 @@ Bán hàng, kho, lịch hẹn, khách hàng, báo cáo — gom về một chỗ,
 **Nút phụ:** Xem dự án đã làm ↓
 
 **Dòng tin cậy (dưới nút):**
-Tư vấn miễn phí [cần xác nhận] · Báo giá rõ trước khi làm · Bạn sở hữu phần mềm và dữ liệu [cần xác nhận]
+Tư vấn miễn phí · Báo giá rõ trước khi làm · Bạn sở hữu phần mềm và dữ liệu
 
 **Ảnh:** ảnh chụp tuchamsocgan.vn trên laptop, kèm điện thoại hiển thị "Nhật ký sức khỏe". Có nhãn nhỏ: *Dự án thật: tuchamsocgan.vn*.
 
@@ -117,7 +117,7 @@ Rà soát website, phần mềm và cách bạn đang lưu thông tin khách. Ch
 - Website có lỗ hổng phổ biến nào không?
 
 **Hợp với bạn nếu:** bạn đang giữ thông tin khách (số điện thoại, địa chỉ, hồ sơ sức khỏe), hoặc từng bị mất fanpage hay mất dữ liệu.
-**Bạn nhận được:** một bản báo cáo ngắn, xếp theo việc nào cần vá trước [cần xác nhận].
+**Bạn nhận được:** một bản báo cáo ngắn, xếp theo việc nào cần vá trước.
 
 ---
 
@@ -131,14 +131,14 @@ Cổng thông tin và nhật ký sức khỏe cho người bệnh điều trị 
 
 | | |
 |---|---|
-| Khách hàng | Khoa Ngoại Gan – Mật – Tụy, Bệnh viện Đại học Y Dược TP.HCM [cần xác nhận được phép nêu tên và dùng logo] |
+| Khách hàng | Khoa Ngoại Gan – Mật – Tụy, Bệnh viện Đại học Y Dược TP.HCM |
 | Lĩnh vực | Y tế |
 | Dùng trên | Máy tính và điện thoại |
-| Thời gian làm | [cần xác nhận] |
+| Thời gian làm | 3 tháng |
 | Xem trang thật | tuchamsocgan.vn |
 
 ### Bài toán
-Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, họ và người nhà có rất nhiều câu hỏi: trước thủ thuật phải nhịn ăn bao lâu, sau TACE bị sốt có sao không, khi nào phải quay lại viện. Thông tin phải rõ ràng, đáng tin, và đọc được — kể cả với người mắt kém, không quen dùng điện thoại. [cần xác nhận: mô tả đúng bài toán khoa đưa ra]
+Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, họ và người nhà có rất nhiều câu hỏi: trước thủ thuật phải nhịn ăn bao lâu, sau TACE bị sốt có sao không, khi nào phải quay lại viện. Thông tin phải rõ ràng, đáng tin, và đọc được — kể cả với người mắt kém, không quen dùng điện thoại.
 
 ### Chúng tôi đã làm
 
@@ -163,9 +163,9 @@ Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, h�
 > "Trang web giúp tôi tham khảo thông tin dễ dàng, để chuẩn bị tốt."
 > — Người bệnh điều trị TACE, chia sẻ trên tuchamsocgan.vn
 
-*Ẩn tên người bệnh vì đây là thông tin sức khỏe. Xin phép khoa trước khi trích dẫn [cần xác nhận].*
+*Ẩn tên người bệnh vì đây là thông tin sức khỏe. Khoa đã cho phép trích dẫn.*
 
-**Con số:** [cần số thật — VD: số tài khoản người bệnh, số lượt ghi nhật ký, số lượt nghe đọc to]
+**Con số:** hơn 100 người dùng
 
 **Câu nối sang khách của bạn:**
 Điều này liên quan gì đến cửa hàng của bạn? Nếu người bệnh lớn tuổi tự dùng được, nhân viên của bạn cũng dùng được — không cần học lâu.
@@ -209,17 +209,17 @@ Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, h�
 
 ## Rõ ràng từng bước, không bất ngờ về tiền
 
-**1. Trò chuyện** — 30 phút, miễn phí [cần xác nhận]
+**1. Trò chuyện** — 30 phút, miễn phí
 Bạn kể cách đang làm, chúng tôi hỏi kỹ — qua Zalo, điện thoại hoặc gặp trực tiếp. Bạn sẽ biết có nên làm hay không, kể cả khi câu trả lời là "phần mềm có sẵn là đủ".
 
-**2. Đề xuất & báo giá** — trong 3–5 ngày [cần xác nhận]
+**2. Đề xuất & báo giá** — trong 1–3 ngày
 Làm những gì, bao lâu, bao nhiêu tiền — ghi rõ trên giấy. Chưa đồng ý thì chưa mất gì.
 
-**3. Làm thử phần quan trọng nhất** — 2–4 tuần [cần xác nhận]
-Bạn dùng thử với công việc thật trước khi làm hết. Chưa hợp thì chỉnh, và bạn chưa phải trả cho cả hệ thống [cần xác nhận].
+**3. Làm thử phần quan trọng nhất** — 2–4 tuần
+Bạn dùng thử với công việc thật trước khi làm hết. Chưa hợp thì chỉnh, và bạn chưa phải trả cho cả hệ thống.
 
 **4. Bàn giao & đồng hành**
-Hướng dẫn tận tay cho bạn và nhân viên. Sửa lỗi miễn phí trong [X tháng] [cần xác nhận]. Hỗ trợ qua Zalo khi cần.
+Hướng dẫn tận tay cho bạn và nhân viên. Sửa lỗi miễn phí trong 3 tháng. Hỗ trợ qua Zalo khi cần.
 
 **Nút:** Bắt đầu bằng một cuộc trò chuyện →
 
@@ -234,17 +234,13 @@ Hướng dẫn tận tay cho bạn và nhân viên. Sửa lỗi miễn phí tron
 - **Dễ dùng trước hết.** Chúng tôi thiết kế cho người bận rộn, không rành máy tính. Bằng chứng: người bệnh lớn tuổi tự dùng được tuchamsocgan.vn.
 - **Nói tiếng Việt đời thường.** Không thuật ngữ, không vòng vo. Bạn hỏi gì, chúng tôi trả lời sao cho bạn hiểu.
 - **An toàn dữ liệu từ ngày đầu.** Kiểm tra bảo mật là một dịch vụ chúng tôi làm riêng, nên phần mềm của bạn được làm theo cùng tiêu chuẩn: chia quyền, sao lưu, bảo vệ mật khẩu.
-- **Bạn là chủ phần mềm và dữ liệu.** Muốn xuất dữ liệu ra Excel lúc nào cũng được [cần xác nhận: có bàn giao mã nguồn không].
+- **Bạn là chủ phần mềm và dữ liệu.** Muốn xuất dữ liệu ra Excel lúc nào cũng được. Bàn giao mã nguồn nếu bạn muốn.
 - **Nói thật khi không cần làm riêng.** Nếu KiotViet, Sapo hay Google Sheet đủ dùng, chúng tôi sẽ nói thẳng.
 
 **Câu chuyện cái tên** (khối nhỏ, cạnh hình vòng tròn Ensō):
 Ensō là vòng tròn vẽ bằng một nét trong thiền Nhật Bản, tượng trưng cho sự trọn vẹn và đơn giản. Đó cũng là cách chúng tôi muốn phần mềm của bạn: khép kín, gọn gàng, không thừa.
 
-**Đội ngũ** [cần cung cấp] — mỗi người một thẻ:
-- Ảnh thật
-- Tên
-- Vai trò (VD: Phụ trách dự án / Lập trình / Bảo mật)
-- Một câu, VD: "Tôi là người bạn sẽ nhắn Zalo mỗi ngày."
+**Đội ngũ:** Đội ngũ kỹ sư chuyên nghiệp
 
 ---
 
@@ -255,10 +251,10 @@ Ensō là vòng tròn vẽ bằng một nét trong thiền Nhật Bản, tượn
 ## Những câu khách hay hỏi
 
 **Làm một phần mềm như vậy tốn bao nhiêu?**
-Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ [X] triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ [Y] triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì. [cần số thật]
+Tùy độ lớn. Một phần mềm nhỏ, VD quản lý đơn và kho cho một cửa hàng, thường từ 3 triệu. Hệ thống nhiều chi nhánh hoặc có ứng dụng cho khách thì từ 20 triệu. Bạn nhận báo giá chi tiết sau buổi trò chuyện đầu, trước khi quyết định bất cứ điều gì.
 
 **Bao lâu thì dùng được?**
-Phần quan trọng nhất thường dùng thử được sau 2–4 tuần [cần xác nhận]. Phần còn lại làm dần theo thứ tự bạn cần.
+Phần quan trọng nhất thường dùng thử được sau 2–4 tuần. Phần còn lại làm dần theo thứ tự bạn cần.
 
 **Sao không dùng KiotViet, Sapo cho rẻ?**
 Nếu phần mềm có sẵn đủ dùng, bạn nên dùng — chúng tôi sẽ nói thật. Làm riêng đáng tiền khi:
@@ -270,22 +266,22 @@ Nếu phần mềm có sẵn đủ dùng, bạn nên dùng — chúng tôi sẽ 
 Được — đây là điều chúng tôi chú trọng nhất. Mỗi màn hình chỉ làm một việc, chữ to, nút rõ. Chúng tôi hướng dẫn tận tay đến khi mọi người tự làm được.
 
 **Dữ liệu của tôi để ở đâu, có an toàn không?**
-- Lưu trên máy chủ [cần xác nhận: đặt ở Việt Nam hay dịch vụ đám mây].
-- Sao lưu hằng ngày [cần xác nhận].
+- Lưu trên máy chủ ở Việt Nam hoặc dịch vụ đám mây, tùy yêu cầu của bạn.
+- Sao lưu định kỳ theo yêu cầu của bạn.
 - Chỉ người bạn cho phép mới xem được.
 - Dữ liệu là của bạn.
 
 **Làm xong rồi, hỏng thì sao?**
-Sửa lỗi miễn phí trong [X tháng] [cần xác nhận]. Sau đó có gói bảo trì hằng tháng [cần xác nhận giá], hoặc gọi khi cần.
+Sửa lỗi miễn phí trong 3 tháng. Sau đó có gói bảo trì hằng tháng, giá do hai bên trao đổi, hoặc gọi khi cần.
 
 **Sau này muốn thêm tính năng thì sao?**
 Thêm được. Phần mềm được làm theo từng phần nên mở rộng dễ, và mỗi lần thêm đều báo giá trước.
 
 **Có phải trả hết tiền một lần không?**
-Không. Thanh toán theo từng giai đoạn [cần xác nhận tỉ lệ, VD 30% – 40% – 30%].
+Không. Thanh toán theo từng giai đoạn, thông thường 30% – 40% – 30%.
 
 **Tôi ở tỉnh khác, có làm được không?**
-Được. Phần lớn công việc trao đổi qua Zalo và gọi video. Khi cần, chúng tôi gặp trực tiếp [cần xác nhận khu vực].
+Được. Phần lớn công việc trao đổi qua Zalo và gọi video. Khi cần, chúng tôi gặp trực tiếp tại TP.HCM.
 
 ---
 
@@ -300,8 +296,8 @@ Không cần chuẩn bị gì. Một tin nhắn Zalo là đủ — chúng tôi s
 **Kênh liên hệ** (theo thứ tự ưu tiên):
 | Kênh | Hiển thị | Ghi chú |
 |---|---|---|
-| Zalo (nhanh nhất) | Nhắn Zalo 0364 151 304 | Link zalo.me/0364151304 [cần xác nhận, hay dùng Zalo OA?] |
-| Gọi điện | 0364 151 304 | Giờ làm việc [cần xác nhận] |
+| Zalo (nhanh nhất) | Nhắn Zalo 0364 151 304 | Link zalo.me/0364151304 |
+| Gọi điện | 0364 151 304 | Giờ làm việc 9h – 18h, thứ 2 – thứ 6 |
 | Messenger | Nhắn qua Facebook | m.me/61590018866554 |
 | Email | ensotechstudio@gmail.com | |
 
@@ -317,7 +313,7 @@ Không cần chuẩn bị gì. Một tin nhắn Zalo là đủ — chúng tôi s
 
 **Nút gửi:** Gửi — chúng tôi gọi lại
 
-**Ghi chú dưới nút:** Chúng tôi gọi hoặc nhắn Zalo lại trong 1 ngày làm việc [cần xác nhận]. Số của bạn chỉ dùng để tư vấn, không chia sẻ cho ai.
+**Ghi chú dưới nút:** Chúng tôi gọi hoặc nhắn Zalo lại trong 1 ngày làm việc. Số của bạn chỉ dùng để tư vấn, không chia sẻ cho ai.
 
 **Thông báo:**
 - Thiếu tên: Bạn cho chúng tôi biết tên để tiện xưng hô nhé.
@@ -333,7 +329,7 @@ Không cần chuẩn bị gì. Một tin nhắn Zalo là đủ — chúng tôi s
 - **Logo** + mô tả: Làm phần mềm và ứng dụng theo yêu cầu cho cửa hàng, doanh nghiệp nhỏ, spa và phòng khám — dễ dùng, an toàn dữ liệu.
 - **Liên hệ:** Zalo / điện thoại 0364 151 304 · ensotechstudio@gmail.com · Messenger
 - **Liên kết:** Dịch vụ · Dự án · Cách làm việc · Hỏi đáp
-- **Pháp lý:** © 2026 EnsoTech Studio · [Mã số thuế, địa chỉ — cần xác nhận nếu có]
+- **Pháp lý:** © 2026 EnsoTech Studio · TP.HCM
 - **Bảo mật thông tin:** Thông tin bạn gửi chỉ dùng để tư vấn. Chúng tôi không bán hay chia sẻ cho bên thứ ba.
 
 ---
@@ -345,21 +341,21 @@ Không cần chuẩn bị gì. Một tin nhắn Zalo là đủ — chúng tôi s
 
 ---
 
-## Tổng hợp: cần anh/chị xác nhận
+## Tổng hợp: đã xác nhận (17/10/2026)
 
-| # | Nội dung | Xuất hiện ở |
+| # | Nội dung | Trả lời |
 |---|---|---|
-| 1 | Tư vấn đầu có miễn phí không, 30 phút? | Hero, Cách làm việc |
-| 2 | Khoảng giá khởi điểm [X], [Y] triệu | Hỏi đáp |
-| 3 | Mốc thời gian: báo giá 3–5 ngày, làm thử 2–4 tuần | Cách làm việc, Hỏi đáp |
-| 4 | Thanh toán theo giai đoạn? Tỉ lệ? | Cách làm việc, Hỏi đáp |
-| 5 | Bàn giao mã nguồn? Khách sở hữu dữ liệu? | Hero, Vì sao chọn |
-| 6 | Bảo hành bao lâu, giá gói bảo trì | Cách làm việc, Hỏi đáp |
-| 7 | Máy chủ đặt ở đâu, có sao lưu hằng ngày không | Hỏi đáp |
-| 8 | Phản hồi trong 1 ngày làm việc? Giờ làm việc? | Liên hệ |
-| 9 | Link Zalo cá nhân hay Zalo OA | Liên hệ, nút nổi |
-| 10 | **Khoa / Bệnh viện ĐHYD có cho phép nêu tên, dùng logo, trích lời người bệnh không** | Dự án |
-| 11 | Mô tả bài toán TACE có đúng không, thời gian làm, con số sử dụng | Dự án |
-| 12 | Quyền dùng ảnh bác sĩ trong banner tuchamsocgan.vn | Hero, Dự án |
-| 13 | Đội ngũ: tên, vai trò, ảnh | Vì sao chọn |
-| 14 | Khu vực làm việc, mã số thuế, địa chỉ | Hỏi đáp, Chân trang |
+| 1 | Tư vấn đầu miễn phí, 30 phút | Đúng |
+| 2 | Khoảng giá khởi điểm | Từ 3 triệu (phần mềm nhỏ), từ 20 triệu (nhiều chi nhánh / có ứng dụng cho khách) |
+| 3 | Mốc thời gian | Báo giá 1–3 ngày, làm thử 2–4 tuần |
+| 4 | Thanh toán | Theo từng giai đoạn, thông thường 30% – 40% – 30% |
+| 5 | Bàn giao mã nguồn, dữ liệu | Khách sở hữu; bàn giao mã nguồn nếu khách muốn |
+| 6 | Bảo hành, bảo trì | Sửa lỗi miễn phí 3 tháng; giá bảo trì hai bên trao đổi, không ghi giá |
+| 7 | Máy chủ, sao lưu | Tùy yêu cầu của khách |
+| 8 | Phản hồi, giờ làm việc | 1 ngày làm việc; 9h – 18h, thứ 2 – thứ 6 |
+| 9 | Link Zalo | Giữ Zalo cá nhân |
+| 10 | Khoa / Bệnh viện ĐHYD | Được nêu tên, được trích lời người bệnh |
+| 11 | Dự án TACE | Mô tả đúng; làm trong 3 tháng; hơn 100 người dùng |
+| 12 | Quyền dùng ảnh bác sĩ trong banner tuchamsocgan.vn | **Chưa hỏi** — chưa dùng ảnh có bác sĩ |
+| 13 | Đội ngũ | "Đội ngũ kỹ sư chuyên nghiệp" |
+| 14 | Khu vực | TP.HCM |

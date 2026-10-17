@@ -214,9 +214,6 @@ export function Project({ children: wp }: SecProps) {
             <figcaption>— {q.by}</figcaption>
           </figure>
         ))}
-        <p className="reveal" style={idx(5)}>
-          <Rich text={PROJECT.quotesMark} />
-        </p>
       </div>
       <div data-reveal className="tp-blk p" style={place([734, 72, 32])}>
         <p className="tp-bridge reveal">{PROJECT.bridge}</p>

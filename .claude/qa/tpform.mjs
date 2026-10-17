@@ -11,7 +11,19 @@ await page.route('**/api/contact', async (r) => {
   await new Promise((s) => setTimeout(s, 1200))
   await r.fulfill({ status: reply.status, contentType: 'application/json', body: reply.body })
 })
-await page.goto('http://127.0.0.1:3000/thu-phap', { waitUntil: 'networkidle' })
+// Địa chỉ cũ /thu-phap phải chuyển hẳn (301/308) về trang chính.
+const old = await page.request.get('http://127.0.0.1:3000/thu-phap', { maxRedirects: 0 })
+console.log('thu-phap:', old.status(), old.headers().location)
+await page.goto('http://127.0.0.1:3000/ca-chep', { waitUntil: 'domcontentloaded' })
+console.log('ca-chep robots:', await page.getAttribute('meta[name=robots]', 'content'))
+await page.goto('http://127.0.0.1:3000/', { waitUntil: 'networkidle' })
+console.log('home:', await page.evaluate(() => ({
+  title: document.title,
+  canonical: document.querySelector('link[rel=canonical]')?.href,
+  robots: document.querySelector('meta[name=robots]')?.content,
+  h1: document.querySelectorAll('h1').length,
+  ld: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent)['@type']),
+})))
 await page.waitForTimeout(3000)
 const shot = (n) => page.screenshot({ path: `${out}/${n}.png` })
 // Focus như người dùng Tab tới: dọc thì trình duyệt cuộn, tranh thì máy quay lướt tới.

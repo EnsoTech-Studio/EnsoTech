@@ -1,0 +1,134 @@
+/* Trang dự án kiểu thư pháp: trang dọc thường, không engine. Ảnh chụp trang thật bồi trên giấy như tranh treo.
+   Gốc trang mang data-flat nên các luật "bức tranh lớn" trong thu-phap.css không áp vào. */
+
+.tpd-h1 {
+  font-size: min(clamp(3rem, 9vw, 5.4rem), 15svh);
+  line-height: 1.12;
+  margin-block: 0.9rem 1.3rem;
+  text-wrap: balance;
+}
+
+/* Ảnh máy tính: lề giấy bồi sáng, viền mực mảnh, bóng đổ nhẹ như tranh treo tách khỏi tường, dấu son ở góc. */
+.tpd-shot {
+  position: relative;
+  padding: clamp(0.35rem, 0.9vw, 0.75rem);
+  background: var(--paper-hi);
+  border: 1px solid rgb(25 33 31 / 0.16);
+  box-shadow:
+    0 1px 2px rgb(25 33 31 / 0.08),
+    0 30px 60px -30px rgb(25 33 31 / 0.5);
+}
+.tpd-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  outline: 1px solid rgb(25 33 31 / 0.1);
+}
+.tpd-shot::after {
+  content: "";
+  position: absolute;
+  right: -0.55rem;
+  bottom: 1.4rem;
+  width: 1.3rem;
+  height: 1.6rem;
+  background: var(--son);
+  border-radius: 2px 4px 3px 5px / 4px 3px 5px 2px;
+  filter: url(#tp-rough);
+  rotate: 4deg;
+}
+
+/* Điện thoại: khung mực dày bo tròn. */
+.tpd-phone {
+  width: min(100%, 17rem);
+  padding: 0.4rem;
+  background: var(--ink);
+  border-radius: 2.1rem;
+  box-shadow: 0 30px 60px -26px rgb(25 33 31 / 0.6);
+}
+.tpd-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.75rem;
+}
+/* Ở đầu trang điện thoại chồng lên góc dưới trái ảnh máy tính. */
+.tpd-hero-phone {
+  position: absolute;
+  left: -5%;
+  bottom: -14%;
+  width: 26%;
+  padding: 0.25rem;
+  border-radius: 1.4rem;
+}
+.tpd-hero-phone img {
+  border-radius: 1.15rem;
+}
+
+/* Năm việc đã làm: chữ một bên, ảnh một bên, đổi bên mỗi việc. Số son viết bút lông. */
+.tpd-done {
+  counter-reset: did;
+  display: grid;
+  gap: clamp(4.5rem, 10vw, 9rem);
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+.tpd-done > li {
+  counter-increment: did;
+  display: grid;
+  gap: 2.2rem;
+  align-items: center;
+}
+@media (min-width: 64rem) {
+  .tpd-done > li {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 5vw;
+  }
+  .tpd-done > li:nth-child(even) > :first-child {
+    order: 1;
+  }
+}
+.tpd-done h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.tpd-done h3::before {
+  content: counter(did);
+  flex: none;
+  font-family: var(--font-brush), var(--serif);
+  font-weight: 400;
+  font-size: 2.3em;
+  line-height: 0.7;
+  color: var(--son);
+}
+.tpd-done h3 + * {
+  margin-top: 0.9em;
+}
+.tpd-done figure:has(.tpd-phone) {
+  justify-self: center;
+}
+
+.tpd-q blockquote {
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  font-style: italic;
+  line-height: 1.2;
+}
+.tpd-q figcaption {
+  margin-top: 0.8rem;
+  font-size: 0.88rem;
+  color: rgb(25 33 31 / 0.66);
+}
+/* Dấu ngoặc kép lớn viết bút lông, son nhạt, nằm sau câu nói. */
+.tpd-q::before {
+  content: "“" / "";
+  position: absolute;
+  left: -0.1em;
+  top: -0.45em;
+  font-family: var(--font-brush), var(--serif);
+  font-size: clamp(6rem, 11vw, 9.5rem);
+  line-height: 1;
+  color: rgb(184 50 42 / 0.22);
+  pointer-events: none;
+}

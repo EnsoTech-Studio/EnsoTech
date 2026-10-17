@@ -5,7 +5,7 @@ import { mkdirSync } from 'node:fs'
 const { chromium } = await import('file:///D:/Jobs/EnsoTech%20Studio/Ensotech/node_modules/playwright/index.mjs')
 const args = process.argv.slice(2)
 const [out, size = '1440x900', mode = 'paint'] = args
-const url = args.find((a) => a.startsWith('http')) ?? 'http://127.0.0.1:3000/thu-phap'
+const url = args.find((a) => a.startsWith('http')) ?? 'http://127.0.0.1:3000/'
 const [w, h] = size.split('x').map(Number)
 // wait=ms: chờ lâu hơn để nét chữ lộ hết (tiêu đề cần ~1,7 s), mặc định 1500 (paint) / 900 (vert).
 const wait = args.find((a) => a.startsWith('wait='))?.slice(5)
