@@ -13,6 +13,9 @@ interface Box {
   h: number
 }
 
+// Tải engine (three.js) ngay khi module chạy trên trình duyệt, song song với hydrate, không đợi tới effect.
+const engineMod = typeof window === 'undefined' ? null : import('./ink/engine')
+
 /**
  * Một canvas cố định sau chữ. Cuộn trang gốc (không chiếm bánh xe chuột) điều khiển mọi thứ:
  * - Màn lớn: tờ tranh .tp-world trượt/phóng theo máy quay journey(v); canvas vẽ cùng máy quay đó.
@@ -48,9 +51,8 @@ export default function Painting() {
 
     let gl2 = false
     try {
-      const gl = document.createElement('canvas').getContext('webgl2')
-      gl2 = !!gl
-      gl?.getExtension('WEBGL_lose_context')?.loseContext()
+      // Mở thẳng trên canvas thật với thuộc tính mặc định, đúng bộ three xin → three dùng lại, khỏi tạo context hai lần.
+      gl2 = !!canvas.getContext('webgl2')
     } catch {
       gl2 = false
     }
@@ -77,6 +79,7 @@ export default function Painting() {
     let tr = ''
     let stamp = false
     let hashDone = false
+    let built = ''
 
     /** Vị trí cuộn đầu tiên mà khối lọt vào khung (lim: 1 = vừa chạm mép, nhỏ hơn = vào sâu hơn). */
     const visP = (b: Box, lim: number) => {
@@ -248,7 +251,12 @@ export default function Painting() {
       ys = scrollY
       if (!engine) return
       engine.size(cw, ch)
-      engine.build(measure(), u, ch)
+      // ResizeObserver lần đầu, fonts.ready… hay gọi lại mà số đo y nguyên: khỏi dựng lại cả bức tranh.
+      const anchors = measure(), key = JSON.stringify([anchors, u, ch])
+      if (key !== built) {
+        engine.build(anchors, u, ch)
+        built = key
+      }
       if (!hashDone && paint && location.hash) {
         const t = document.getElementById(decodeURIComponent(location.hash.slice(1)))
         if (t && root.contains(t)) go(t, false)
@@ -270,7 +278,7 @@ export default function Painting() {
     root.addEventListener('focusin', onFocus)
     layout()
 
-    import('./ink/engine')
+    engineMod!
       .then(({ createEngine }) => {
         if (dead) return
         engine = createEngine(canvas)
@@ -284,8 +292,9 @@ export default function Painting() {
       })
 
     // ---------- Vòng khung hình ----------
-    const born = performance.now()
-    let last = born
+    // Đồng hồ bắt đầu từ khung tranh vẽ thật đầu tiên, để nét vẽ dần ra trước mắt người xem (không bật ra một lượt).
+    let born = 0
+    let last = performance.now()
     let raf = 0
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
@@ -339,7 +348,8 @@ export default function Painting() {
         stamp = false
         delete root.dataset.stamp
       }
-      if (!engine) return
+      if (!engine?.ready) return
+      born ||= now
       // Gió: cuộn càng nhanh cỏ cây càng ngả; buông tay thì đứng lại từ từ.
       const vel = dt > 0 ? (ys - ys0) / dt : 0
       wind += (clamp(vel / (ch * 1.5), -1, 1) - wind) * (1 - Math.exp(-4 * dt))

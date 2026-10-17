@@ -181,7 +181,13 @@ export function drawLife(b: InkBatch, list: readonly Anchor[], c: Life) {
     if (show <= 0) continue
     // Sân khấu màn cuối (group 1) bị dời theo stage nên không lọc; dòng suối tự lọc từng cánh hoa.
     if (a.group === 0 && a.art !== 'drift' && (a.x > x1 + m || a.x + a.w < x0 - m || a.y > y1 + m || a.y + a.h < y0 - m)) continue
-    const base = { group: a.group, par: a.par, home: a.home }
-    DRAW[a.art]?.((s) => b.add({ ...s, ...base, a: (s.a ?? 1) * show }), a, c)
+    // ponytail: ghi thẳng vào nét vừa tạo (nét nào cũng là object mới của hàm vẽ), khỏi sao chép hàng nghìn nét mỗi khung.
+    DRAW[a.art]?.((s) => {
+      s.group = a.group
+      s.par = a.par
+      s.home = a.home
+      s.a = (s.a ?? 1) * show
+      b.add(s)
+    }, a, c)
   }
 }
