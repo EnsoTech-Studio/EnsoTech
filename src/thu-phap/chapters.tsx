@@ -264,9 +264,6 @@ export function Scenarios({ children: wp }: SecProps) {
       </div>
       {SCENARIOS.items.map((s, i) => (
         <article key={s.title} data-reveal className="tp-blk p" style={place(SC_AT[i])}>
-          <p className="reveal">
-            <span className="tp-tag">{SCENARIOS.tag}</span>
-          </p>
           <h3 className="tp-brush tp-h3">
             <Words text={s.title} start={1} />
           </h3>

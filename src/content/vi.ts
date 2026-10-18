@@ -216,7 +216,6 @@ export const PROJECT = {
 export const SCENARIOS = {
   eyebrow: 'Có thể làm cho bạn',
   title: 'Những bài toán tương tự chúng tôi giải được',
-  tag: 'Minh họa',
   before: 'Trước:',
   after: 'Sau:',
   items: [

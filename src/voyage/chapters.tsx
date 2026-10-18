@@ -236,10 +236,7 @@ export function Scenarios() {
         {SCENARIOS.items.map((s, i) => (
           <li key={i} data-reveal className={`drift bob shrink-0 hz:w-[clamp(19rem,23vw,25rem)] ${FORK[i]}`} style={css({ '--drift': ['-4vw', '3vw', '-2vw'][i], '--bob': i + 1 })}>
             <article className="reveal lumen sheet rounded-[4px] p-6 sm:p-7 [@media(max-height:46rem)]:p-5" style={css({ '--bob': i })}>
-              <span className="float inline-block rounded-full border border-dashed border-ink/35 px-2.5 py-0.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-wash" style={css({ '--z': 24 })}>
-                {SCENARIOS.tag}
-              </span>
-              <h3 className="float mt-4 font-display text-[clamp(1.4rem,1.7vw,1.75rem)] font-semibold leading-[1.1]" style={css({ '--z': 14 })}>
+              <h3 className="float font-display text-[clamp(1.4rem,1.7vw,1.75rem)] font-semibold leading-[1.1]" style={css({ '--z': 14 })}>
                 {s.title}
               </h3>
               <p className="muted mt-4 text-[0.9rem] leading-relaxed [@media(max-height:46rem)]:text-[0.84rem]">

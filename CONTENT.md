@@ -187,8 +187,6 @@ Người bệnh điều trị TACE phần lớn đã lớn tuổi. Về nhà, h�
 
 ## Những bài toán tương tự chúng tôi giải được
 
-*Mỗi thẻ gắn nhãn nhỏ "Minh họa" — đây là ví dụ để bạn hình dung, không phải dự án đã làm.*
-
 ### Shop online bán qua Zalo & Facebook
 **Trước:** Đơn chốt rải rác trong tin nhắn, tối ngồi chép vào Excel. Có hôm sót đơn. Khách hỏi "đơn em tới đâu rồi" là phải lục lại.
 **Sau:** Đơn từ Zalo, Facebook vào chung một danh sách, kho tự trừ, khách tự tra đơn bằng số điện thoại.
